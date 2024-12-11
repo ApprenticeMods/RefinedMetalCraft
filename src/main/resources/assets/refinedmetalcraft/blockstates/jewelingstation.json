@@ -1,7 +1,25 @@
 {
   "variants": {
-	"": {
+	"facing=down": {
 	  "model": "refinedmetalcraft:block/jewelingstation"
+	},
+	"facing=east": {
+	  "model": "refinedmetalcraft:block/jewelingstation",
+	  "y": 90
+	},
+	"facing=north": {
+	  "model": "refinedmetalcraft:block/jewelingstation"
+	},
+	"facing=south": {
+	  "model": "refinedmetalcraft:block/jewelingstation",
+	  "y": 180
+	},
+	"facing=up": {
+	  "model": "refinedmetalcraft:block/jewelingstation"
+	},
+	"facing=west": {
+	  "model": "refinedmetalcraft:block/jewelingstation",
+	  "y": 270
 	}
   }
 }
