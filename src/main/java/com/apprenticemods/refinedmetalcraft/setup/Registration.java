@@ -1,6 +1,7 @@
 package com.apprenticemods.refinedmetalcraft.setup;
 
 import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
+import com.apprenticemods.refinedmetalcraft.blocks.JewelingStation;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
@@ -30,7 +31,7 @@ public class Registration {
 	// Add the example block item to the building blocks tab
 	private static void addCreative(BuildCreativeModeTabContentsEvent event) {
 		if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-			event.accept(Registration.EXAMPLE_BLOCK_ITEM);
+			event.accept(Registration.JEWELINGSTATION_BLOCK_ITEM);
 		}
 	}
 
@@ -42,10 +43,12 @@ public class Registration {
 
 
 	// Creates a new Block with the id "refinedmetalcraft:example_block", combining the namespace and path
-	public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+	//public static final DeferredBlock<Block> JEWELINGSTATION_BLOCK = BLOCKS.registerSimpleBlock("jewelingstation", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
 
-	// Creates a new BlockItem with the id "refinedmetalcraft:example_block", combining the namespace and path
-	public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+	public static final DeferredBlock<Block> JEWELINGSTATION_BLOCK = BLOCKS.register("jewelingstation", () -> new JewelingStation(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)));
+
+	// Creates a new BlockItem with the id "refinedmetalcraft:jewelingstation", combining the namespace and path
+	public static final DeferredItem<BlockItem> JEWELINGSTATION_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("jewelingstation", JEWELINGSTATION_BLOCK);
 
 
 	// Creates a new food item with the id "refinedmetalcraft:example_id", nutrition 1 and saturation 2
@@ -58,6 +61,7 @@ public class Registration {
 	// Creates a creative tab with the id "refinedmetalcraft:example_tab" for the example item, that is placed after the combat tab
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.refinedmetalcraft")).withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> EXAMPLE_ITEM.get().getDefaultInstance()).displayItems((parameters, output) -> {
 				output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+				output.accept(JEWELINGSTATION_BLOCK_ITEM.get());
 			})
 			.build());
 
