@@ -1,4 +1,7 @@
 {
-  "itemGroup.refinedmetalcraft": "Example Mod Tab", "block.refinedmetalcraft.example_block": "Example Block",
-  "item.refinedmetalcraft.example_item": "Example Item"
+  "itemGroup.refinedmetalcraft": "Refined Metal Craft",
+
+  "block.refinedmetalcraft.jewelingstation": "Jeweling Station",
+
+  "item.refinedmetalcraft.spring": "Spring"
 }

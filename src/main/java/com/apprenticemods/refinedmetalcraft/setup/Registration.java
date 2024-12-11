@@ -2,6 +2,7 @@ package com.apprenticemods.refinedmetalcraft.setup;
 
 import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
 import com.apprenticemods.refinedmetalcraft.blocks.JewelingStation;
+import com.apprenticemods.refinedmetalcraft.items.SpringItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
@@ -51,11 +52,9 @@ public class Registration {
 
 
 	// Creates a new food item with the id "refinedmetalcraft:example_id", nutrition 1 and saturation 2
-	public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item",
-			new Item.Properties().food(
-					new FoodProperties.Builder().alwaysEdible().nutrition(1).saturationModifier(2f)
-							.build()
-			));
+	public static final DeferredItem<Item> SPRING_ITEM = ITEMS.register("spring", SpringItem::new);
+
+
 
 	// Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "refinedmetalcraft" namespace
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB,
@@ -67,9 +66,9 @@ public class Registration {
 			() -> CreativeModeTab.builder()
 					.title(Component.translatable("itemGroup.refinedmetalcraft"))
 					.withTabsBefore(CreativeModeTabs.COMBAT)
-					.icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+					.icon(() -> SPRING_ITEM.get().getDefaultInstance())
 					.displayItems((parameters, output) -> {
-						output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+						output.accept(SPRING_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
 						output.accept(JEWELINGSTATION_BLOCK_ITEM.get());
 					})
 					.build());
