@@ -35,36 +35,44 @@ public class Registration {
 		}
 	}
 
-	// Create a Deferred Register to hold Blocks which will all be registered under the "refinedmetalcraft" namespace
+	// Create Deferred Registers to hold our Blocks and Items
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(RefinedMetalCraft.MODID);
-
-	// Create a Deferred Register to hold Items which will all be registered under the "refinedmetalcraft" namespace
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(RefinedMetalCraft.MODID);
 
 
-	// Creates a new Block with the id "refinedmetalcraft:example_block", combining the namespace and path
-	//public static final DeferredBlock<Block> JEWELINGSTATION_BLOCK = BLOCKS.registerSimpleBlock("jewelingstation", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+	public static final DeferredBlock<Block> JEWELINGSTATION_BLOCK = BLOCKS.register("jewelingstation",
+			() -> new JewelingStation(BlockBehaviour.Properties.of().mapColor(MapColor.STONE))
+	);
 
-	public static final DeferredBlock<Block> JEWELINGSTATION_BLOCK = BLOCKS.register("jewelingstation", () -> new JewelingStation(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)));
 
-	// Creates a new BlockItem with the id "refinedmetalcraft:jewelingstation", combining the namespace and path
-	public static final DeferredItem<BlockItem> JEWELINGSTATION_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("jewelingstation", JEWELINGSTATION_BLOCK);
+	public static final DeferredItem<BlockItem> JEWELINGSTATION_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
+			"jewelingstation", JEWELINGSTATION_BLOCK
+	);
 
 
 	// Creates a new food item with the id "refinedmetalcraft:example_id", nutrition 1 and saturation 2
-	public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder().alwaysEdible().nutrition(1).saturationModifier(2f)
-			.build()));
+	public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item",
+			new Item.Properties().food(
+					new FoodProperties.Builder().alwaysEdible().nutrition(1).saturationModifier(2f)
+							.build()
+			));
 
 	// Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "refinedmetalcraft" namespace
-	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RefinedMetalCraft.MODID);
+	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB,
+			RefinedMetalCraft.MODID);
 
 	// Creates a creative tab with the id "refinedmetalcraft:example_tab" for the example item, that is placed after the combat tab
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.refinedmetalcraft")).withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> EXAMPLE_ITEM.get().getDefaultInstance()).displayItems((parameters, output) -> {
-				output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
-				output.accept(JEWELINGSTATION_BLOCK_ITEM.get());
-			})
-			.build());
-
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register(
+			"example_tab",
+			() -> CreativeModeTab.builder()
+					.title(Component.translatable("itemGroup.refinedmetalcraft"))
+					.withTabsBefore(CreativeModeTabs.COMBAT)
+					.icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+					.displayItems((parameters, output) -> {
+						output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+						output.accept(JEWELINGSTATION_BLOCK_ITEM.get());
+					})
+					.build());
 
 
 }
