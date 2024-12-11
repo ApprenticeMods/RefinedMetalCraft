@@ -1,5 +1,6 @@
-package com.apprenticemods.refinedmetalcraft;
+package com.apprenticemods.refinedmetalcraft.setup;
 
+import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -27,7 +28,7 @@ public class Config {
 	// a list of strings that are treated as resource locations for items
 	private static final ModConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER.comment("A list of items to log on common setup.").defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), Config::validateItemName);
 
-	static final ModConfigSpec SPEC = BUILDER.build();
+	public static final ModConfigSpec SPEC = BUILDER.build();
 
 	public static boolean logDirtBlock;
 	public static int magicNumber;
