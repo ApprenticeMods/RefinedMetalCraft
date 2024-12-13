@@ -3,14 +3,12 @@ package com.apprenticemods.refinedmetalcraft.setup;
 import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
 import com.apprenticemods.refinedmetalcraft.blocks.JewelingStation;
 import com.apprenticemods.refinedmetalcraft.blocks.JewelingStationEntity;
+import com.apprenticemods.refinedmetalcraft.items.SpringBootsItem;
 import com.apprenticemods.refinedmetalcraft.items.SpringItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -58,6 +56,8 @@ public class Registration {
 
 	// Creates a new food item with the id "refinedmetalcraft:example_id", nutrition 1 and saturation 2
 	public static final DeferredItem<Item> SPRING_ITEM = ITEMS.register("spring", SpringItem::new);
+	//public static final DeferredItem<Item> SPRINGBOOTS_ITEM = ITEMS.register("springboots", SpringBootsItem::new);
+	public static final Supplier<ArmorItem> SPRINGBOOTS_ITEM = ITEMS.register("springboots", SpringBootsItem::new);
 
 
 
@@ -75,6 +75,7 @@ public class Registration {
 					.displayItems((parameters, output) -> {
 						output.accept(SPRING_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
 						output.accept(JEWELINGSTATION_BLOCK_ITEM.get());
+						output.accept(SPRINGBOOTS_ITEM.get());
 					})
 					.build());
 
