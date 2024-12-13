@@ -2,6 +2,7 @@ package com.apprenticemods.refinedmetalcraft.setup;
 
 import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
 import com.apprenticemods.refinedmetalcraft.blocks.JewelingStation;
+import com.apprenticemods.refinedmetalcraft.blocks.JewelingStationEntity;
 import com.apprenticemods.refinedmetalcraft.items.SpringItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -11,14 +12,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.*;
+
+import java.util.function.Supplier;
 
 public class Registration {
 
@@ -26,6 +27,7 @@ public class Registration {
 		BLOCKS.register(modbus);
 		ITEMS.register(modbus);
 		CREATIVE_MODE_TABS.register(modbus);
+		BLOCK_ENTITIES.register(modbus);
 		modbus.addListener(Registration::addCreative);
 	}
 
@@ -39,12 +41,15 @@ public class Registration {
 	// Create Deferred Registers to hold our Blocks and Items
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(RefinedMetalCraft.MODID);
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(RefinedMetalCraft.MODID);
-
+	public static final DeferredRegister<BlockEntityType<?>>BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, RefinedMetalCraft.MODID);
 
 	public static final DeferredBlock<Block> JEWELINGSTATION_BLOCK = BLOCKS.register("jewelingstation",
 			() -> new JewelingStation(BlockBehaviour.Properties.of().mapColor(MapColor.STONE))
 	);
 
+	public static final Supplier<BlockEntityType<JewelingStationEntity>> JEWELINGSTATION_ENTITY = BLOCK_ENTITIES.register("jewelingstation",
+			() -> BlockEntityType.Builder.of(JewelingStationEntity::new, JEWELINGSTATION_BLOCK.get()).build(null)
+	);
 
 	public static final DeferredItem<BlockItem> JEWELINGSTATION_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
 			"jewelingstation", JEWELINGSTATION_BLOCK
