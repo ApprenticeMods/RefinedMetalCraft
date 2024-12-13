@@ -9,4 +9,8 @@ public class JewelingStationEntity extends BlockEntity {
 	public JewelingStationEntity(BlockPos pos, BlockState blockState) {
 		super(Registration.JEWELINGSTATION_ENTITY.get(), pos, blockState);
 	}
+
+	public void tick() {
+
+	}
 }
