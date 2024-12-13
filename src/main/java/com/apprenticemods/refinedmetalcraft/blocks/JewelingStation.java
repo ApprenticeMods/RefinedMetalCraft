@@ -3,6 +3,10 @@ package com.apprenticemods.refinedmetalcraft.blocks;
 import com.apprenticemods.refinedmetalcraft.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -28,6 +33,20 @@ public class JewelingStation extends Block implements EntityBlock {
 		this.registerDefaultState(this.getStateDefinition().any()
 				.setValue(BlockStateProperties.FACING, Direction.NORTH)
 		);
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		if(level.isClientSide()) {
+			return InteractionResult.SUCCESS;
+		}
+
+		if(level.getBlockEntity(pos) instanceof JewelingStationEntity jewelingStation) {
+			jewelingStation.outputInventoryHandler.setStackInSlot(0, new ItemStack(Items.DIAMOND, 1));
+			return InteractionResult.CONSUME;
+		}
+
+		return super.useWithoutItem(state, level, pos, player, hitResult);
 	}
 
 	@Override
