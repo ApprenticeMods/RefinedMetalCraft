@@ -43,6 +43,11 @@ public class JewelingStationEntity extends BlockEntity {
 			protected void onContentsChanged(int slot) {
 				setChanged();
 			}
+
+			@Override
+			public int getSlotLimit(int slot) {
+				return 1;
+			}
 		};
 		handler.side = side;
 		return handler;
