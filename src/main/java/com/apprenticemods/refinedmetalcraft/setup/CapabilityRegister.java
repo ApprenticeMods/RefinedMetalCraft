@@ -24,6 +24,14 @@ public class CapabilityRegister {
                             return jewelingStation.outputInventoryHandler;
                         }
 
+                        if(side == Direction.UP) {
+                            return null;
+                        }
+
+                        if(side == null) {
+                            return null;
+                        }
+
                         //  side     direction    inventory
                         //  NORTH    NORTH        NORTH
                         //  NORTH    EAST         ?
