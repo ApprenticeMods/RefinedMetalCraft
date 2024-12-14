@@ -51,4 +51,8 @@ public class JewelingStationEntity extends BlockEntity {
 	public void tick() {
 
 	}
+
+	public void redstonePulse() {
+
+	}
 }

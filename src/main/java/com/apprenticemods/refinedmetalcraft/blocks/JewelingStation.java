@@ -32,6 +32,7 @@ public class JewelingStation extends Block implements EntityBlock {
 
 		this.registerDefaultState(this.getStateDefinition().any()
 				.setValue(BlockStateProperties.FACING, Direction.NORTH)
+				.setValue(BlockStateProperties.TRIGGERED, false)
 		);
 	}
 
@@ -55,6 +56,7 @@ public class JewelingStation extends Block implements EntityBlock {
 
 		Direction facing = context.getHorizontalDirection().getOpposite();
 		original = original.setValue(BlockStateProperties.FACING, facing);
+		original = original.setValue(BlockStateProperties.TRIGGERED, false);
 		return original;
 	}
 
@@ -62,6 +64,7 @@ public class JewelingStation extends Block implements EntityBlock {
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(BlockStateProperties.FACING);
+		builder.add(BlockStateProperties.TRIGGERED);
 	}
 
 	@Override
@@ -87,6 +90,25 @@ public class JewelingStation extends Block implements EntityBlock {
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
 		return new JewelingStationEntity(blockPos, blockState);
+	}
+
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
+		return true;
+	}
+
+	@Override
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+		boolean hasRedstoneSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
+		boolean isTriggered = state.getValue(BlockStateProperties.TRIGGERED);
+		if (hasRedstoneSignal && !isTriggered) {
+			level.setBlock(pos, state.setValue(BlockStateProperties.TRIGGERED, true), 2);
+			if(level.getBlockEntity(pos) instanceof JewelingStationEntity jewelingStation) {
+				jewelingStation.redstonePulse();
+			}
+		} else if (!hasRedstoneSignal && isTriggered) {
+			level.setBlock(pos, state.setValue(BlockStateProperties.TRIGGERED, false), 2);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
