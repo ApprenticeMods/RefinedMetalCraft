@@ -4,5 +4,12 @@
   "block.refinedmetalcraft.jewelingstation": "Jeweling Station",
 
   "item.refinedmetalcraft.spring": "Spring",
-  "item.refinedmetalcraft.springboots": "Spring Boots"
+  "item.refinedmetalcraft.springboots": "Spring Boots",
+
+
+  "tooltip.refinedmetalcraft.output": "Output",
+  "tooltip.refinedmetalcraft.front": "Front",
+  "tooltip.refinedmetalcraft.back": "Back",
+  "tooltip.refinedmetalcraft.left": "Left",
+  "tooltip.refinedmetalcraft.right": "Right"
 }
