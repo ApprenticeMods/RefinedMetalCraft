@@ -1,6 +1,6 @@
 package com.apprenticemods.refinedmetalcraft.blocks;
 
-import com.apprenticemods.refinedmetalcraft.setup.Registration;
+import com.apprenticemods.refinedmetalcraft.setup.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,7 +15,7 @@ public class JewelingStationEntity extends BlockEntity {
 	public ItemStackHandler leftInventoryHandler;
 
 	public JewelingStationEntity(BlockPos pos, BlockState blockState) {
-		super(Registration.JEWELINGSTATION_ENTITY.get(), pos, blockState);
+		super(ModBlocks.JEWELINGSTATION_ENTITY.get(), pos, blockState);
 
 		this.outputInventoryHandler = createOutputInventory();
 		this.frontInventoryHandler = createInputInventory(Direction.NORTH);

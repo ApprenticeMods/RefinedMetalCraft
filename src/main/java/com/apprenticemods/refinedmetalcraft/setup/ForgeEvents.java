@@ -26,7 +26,7 @@ public class ForgeEvents {
         }
 
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if(player.getInventory().getArmor(0).getItem() != Registration.SPRINGBOOTS_ITEM.get().asItem()) {
+        if(player.getInventory().getArmor(0).getItem() != ModItems.SPRINGBOOTS_ITEM.get().asItem()) {
             return;
         }
 

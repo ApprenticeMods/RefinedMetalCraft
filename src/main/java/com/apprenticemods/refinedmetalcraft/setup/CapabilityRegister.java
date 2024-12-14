@@ -50,7 +50,7 @@ public class CapabilityRegister {
                     }
                     return null;
                 },
-                Registration.JEWELINGSTATION_BLOCK.get()
+                ModBlocks.JEWELINGSTATION_BLOCK.get()
         );
     }
 

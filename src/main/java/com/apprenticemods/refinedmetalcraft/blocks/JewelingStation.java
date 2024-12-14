@@ -1,6 +1,6 @@
 package com.apprenticemods.refinedmetalcraft.blocks;
 
-import com.apprenticemods.refinedmetalcraft.setup.Registration;
+import com.apprenticemods.refinedmetalcraft.setup.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -114,7 +114,7 @@ public class JewelingStation extends Block implements EntityBlock {
 	@SuppressWarnings("unchecked")
 	@Override
 	public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		if(blockEntityType != Registration.JEWELINGSTATION_ENTITY.get()) {
+		if(blockEntityType != ModBlocks.JEWELINGSTATION_ENTITY.get()) {
 			return null;
 		}
 
