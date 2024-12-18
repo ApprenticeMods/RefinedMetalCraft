@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
+  "key": {
+    "#": {
+      "tag": "c:leathers"
+    },
+    "$": {
+      "item": "minecraft:iron_block"
+    },
+    "X": {
+      "tag": "minecraft:planks"
+    }
+  },
   "pattern": [
     "X#X",
     "X$X",
     "XXX"
   ],
-  "key": {
-    "X": {
-      "tag": "minecraft:planks"
-    },
-    "#": {
-      "item": "minecraft:leather"
-    },
-    "$": {
-      "item": "minecraft:iron_block"
-    }
-  },
   "result": {
     "count": 1,
     "id": "refinedmetalcraft:jewelingstation"
