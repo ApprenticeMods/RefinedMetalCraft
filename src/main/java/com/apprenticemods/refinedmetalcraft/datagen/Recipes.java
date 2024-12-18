@@ -1,5 +1,6 @@
 package com.apprenticemods.refinedmetalcraft.datagen;
 
+import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipeBuilder;
 import com.apprenticemods.refinedmetalcraft.setup.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -9,6 +10,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,6 +22,15 @@ public class Recipes extends RecipeProvider {
 
 	@Override
 	protected void buildRecipes(RecipeOutput recipeOutput) {
+		new JewelingStationRecipeBuilder(
+				ModItems.SPRINGBOOTS_ITEM.get().getDefaultInstance(),
+				Ingredient.of(ModItems.SPRING_ITEM.get()), // front
+				Ingredient.of(ModItems.SPRING_ITEM.get()), // left
+				Ingredient.of(ModItems.SPRING_ITEM.get()), // right
+				Ingredient.of(Items.LEATHER_BOOTS), // back
+				Ingredient.of(Items.DIAMOND) // tool
+		).unlockedBy("spring", has(ModItems.SPRING_ITEM.get())).save(recipeOutput);
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.JEWELINGSTATION_BLOCK_ITEM.get())
 				.pattern("X#X")
 				.pattern("X$X")

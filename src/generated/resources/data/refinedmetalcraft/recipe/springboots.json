@@ -1,0 +1,22 @@
+{
+  "type": "refinedmetalcraft:jewelingstation",
+  "back": {
+    "item": "minecraft:leather_boots"
+  },
+  "front": {
+    "item": "refinedmetalcraft:spring"
+  },
+  "left": {
+    "item": "refinedmetalcraft:spring"
+  },
+  "output": {
+    "count": 1,
+    "id": "refinedmetalcraft:springboots"
+  },
+  "right": {
+    "item": "refinedmetalcraft:spring"
+  },
+  "tool": {
+    "item": "minecraft:diamond"
+  }
+}
