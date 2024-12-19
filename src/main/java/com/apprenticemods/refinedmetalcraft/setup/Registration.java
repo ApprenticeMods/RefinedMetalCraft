@@ -34,6 +34,13 @@ public class Registration {
 					.icon(() -> ModItems.SPRING_ITEM.get().getDefaultInstance())
 					.displayItems((parameters, output) -> {
 						output.accept(ModItems.SPRING_ITEM.get());
+						output.accept(ModItems.HANDDRILL_ITEM.get());
+						output.accept(ModItems.HANDGRINDER_ITEM.get());
+						output.accept(ModItems.PLIERS_ITEM.get());
+						output.accept(ModItems.CUTTERS_ITEM.get());
+						output.accept(ModItems.MINIHAMMER_ITEM.get());
+						output.accept(ModItems.FILE_ITEM.get());
+						output.accept(ModItems.SANDINGBELT_ITEM.get());
 						output.accept(ModItems.JEWELINGSTATION_BLOCK_ITEM.get());
 						output.accept(ModItems.SPRINGBOOTS_ITEM.get());
 					})

@@ -5,6 +5,13 @@
 
   "item.refinedmetalcraft.spring": "Spring",
   "item.refinedmetalcraft.springboots": "Spring Boots",
+  "item.refinedmetalcraft.handdrill": "Hand Drill",
+  "item.refinedmetalcraft.handgrinder": "Hand Grinder",
+  "item.refinedmetalcraft.pliers": "Pliers",
+  "item.refinedmetalcraft.cutters": "Cutters",
+  "item.refinedmetalcraft.minihammer": "Mini Hammer",
+  "item.refinedmetalcraft.file": "File",
+  "item.refinedmetalcraft.sandingbelt": "Sanding Belt",
 
 
   "tooltip.refinedmetalcraft.output": "Output",

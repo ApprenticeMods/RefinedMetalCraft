@@ -4,5 +4,19 @@
   "block.refinedmetalcraft.jewelingstation": "Juwelier Station",
 
   "item.refinedmetalcraft.spring": "Feder",
-  "item.refinedmetalcraft.springBoots": "Sprungschuhe"
+  "item.refinedmetalcraft.springboots": "Sprungschuhe",
+  "item.refinedmetalcraft.handdrill": "Handbohrmaschine",
+  "item.refinedmetalcraft.handgrinder": "Handschleifer",
+  "item.refinedmetalcraft.pliers": "Zange",
+  "item.refinedmetalcraft.cutters": "Seitenschneider",
+  "item.refinedmetalcraft.minihammer": "Mini-Hammer",
+  "item.refinedmetalcraft.file": "Feile",
+  "item.refinedmetalcraft.sandingbelt": "Schleifband",
+
+
+  "tooltip.refinedmetalcraft.output": "Ausgabe",
+  "tooltip.refinedmetalcraft.front": "Vorderseite",
+  "tooltip.refinedmetalcraft.back": "Rückseite",
+  "tooltip.refinedmetalcraft.left": "Links",
+  "tooltip.refinedmetalcraft.right": "Rechts"
 }
