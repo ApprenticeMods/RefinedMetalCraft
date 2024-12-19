@@ -6,25 +6,58 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class JewelingStationRecipeBuilder extends SimpleRecipeBuilder {
-	private final Ingredient front;
-	private final Ingredient left;
-	private final Ingredient right;
-	private final Ingredient back;
-	private final Ingredient tool;
+import java.util.ArrayList;
+import java.util.List;
 
-	public JewelingStationRecipeBuilder(ItemStack result, Ingredient front, Ingredient left, Ingredient right, Ingredient back, Ingredient tool) {
+public class JewelingStationRecipeBuilder extends SimpleRecipeBuilder {
+	private Ingredient front;
+	private Ingredient left;
+	private Ingredient right;
+	private Ingredient back;
+	private List<Ingredient> tools;
+
+	public JewelingStationRecipeBuilder(ItemStack result, Ingredient front, Ingredient left, Ingredient right, Ingredient back, List<Ingredient> tools) {
 		super(result);
 		this.front = front;
 		this.left = left;
 		this.right = right;
 		this.back = back;
-		this.tool = tool;
+		this.tools = tools;
+	}
+
+	public JewelingStationRecipeBuilder(ItemStack result) {
+		super(result);
+		this.tools = new ArrayList<>();
+	}
+
+	public JewelingStationRecipeBuilder setBack(Ingredient back) {
+		this.back = back;
+		return this;
+	}
+
+	public JewelingStationRecipeBuilder setFront(Ingredient front) {
+		this.front = front;
+		return this;
+	}
+
+	public JewelingStationRecipeBuilder setLeft(Ingredient left) {
+		this.left = left;
+		return this;
+	}
+
+	public JewelingStationRecipeBuilder setRight(Ingredient right) {
+		this.right = right;
+		return this;
+	}
+
+	public JewelingStationRecipeBuilder addTool(Ingredient tool) {
+		this.tools.add(tool);
+		return this;
 	}
 
 	@Override
 	public void save(RecipeOutput recipeOutput, ResourceLocation id) {
-		JewelingStationRecipe recipe = new JewelingStationRecipe(this.front, this.left, this.right, this.back, this.tool, this.result);
+		JewelingStationRecipe recipe = new JewelingStationRecipe(this.front, this.left, this.right, this.back, this.tools, this.result);
 		recipeOutput.accept(id, recipe, this.getAdvancementOutput(recipeOutput, id));
 	}
 }

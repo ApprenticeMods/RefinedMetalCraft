@@ -22,6 +22,7 @@ public class JewelingStationProvider implements IBlockComponentProvider {
 		appendItem(iTooltip, "left", jewelingStationEntity.leftInventoryHandler);
 		appendItem(iTooltip, "right", jewelingStationEntity.rightInventoryHandler);
 		appendItem(iTooltip, "output", jewelingStationEntity.outputInventoryHandler);
+		appendTools(iTooltip, jewelingStationEntity.toolInventoryHandler);
 	}
 
 	private void appendItem(ITooltip iTooltip, String side, ItemStackHandler inventory) {
@@ -29,6 +30,20 @@ public class JewelingStationProvider implements IBlockComponentProvider {
 		if(!item.isEmpty()) {
 			iTooltip.add(Component.translatable("tooltip.refinedmetalcraft." + side));
 			iTooltip.append(IElementHelper.get().item(item, 0.5f).size(new Vec2(8, 8)).translate(new Vec2(0, -1)));
+		}
+	}
+
+	private void appendTools(ITooltip iTooltip, ItemStackHandler inventory) {
+		boolean first = true;
+		for(int slot = 0; slot < inventory.getSlots(); slot++) {
+			ItemStack item = inventory.getStackInSlot(slot);
+			if(!item.isEmpty()) {
+				if(first) {
+					iTooltip.add(Component.translatable("tooltip.refinedmetalcraft.tools"));
+					first = false;
+				}
+				iTooltip.append(IElementHelper.get().item(item, 0.5f).size(new Vec2(8, 8)).translate(new Vec2(0, -1)));
+			}
 		}
 	}
 

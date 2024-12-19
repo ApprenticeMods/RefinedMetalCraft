@@ -18,18 +18,16 @@ public class CapabilityRegister {
                 Capabilities.ItemHandler.BLOCK,
                 (level, pos, state, blockEntity, side) -> {
                     if(blockEntity instanceof JewelingStationEntity jewelingStation) {
-                        Direction facing = state.getValue(BlockStateProperties.FACING);
+                        if(side == null) {
+                            return jewelingStation.combinedInventoryHandler;
+                        }
 
                         if(side == Direction.DOWN) {
                             return jewelingStation.outputInventoryHandler;
                         }
 
                         if(side == Direction.UP) {
-                            return null;
-                        }
-
-                        if(side == null) {
-                            return null;
+                            return jewelingStation.toolInventoryHandler;
                         }
 
                         //  side     direction    inventory
@@ -37,6 +35,7 @@ public class CapabilityRegister {
                         //  NORTH    EAST         ?
                         //  ...
                         //  WEST     SOUTH        ?
+                        Direction facing = state.getValue(BlockStateProperties.FACING);
                         int rotateForNorth = facing.get2DDataValue() % 4;
                         Direction actualSide = side;
                         for(int i = 0; i < rotateForNorth; i++) {

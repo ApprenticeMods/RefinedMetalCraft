@@ -16,7 +16,9 @@
   "right": {
     "item": "refinedmetalcraft:spring"
   },
-  "tool": {
-    "item": "minecraft:diamond"
-  }
+  "tools": [
+    {
+      "item": "minecraft:diamond"
+    }
+  ]
 }

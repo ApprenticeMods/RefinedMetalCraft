@@ -22,14 +22,13 @@ public class Recipes extends RecipeProvider {
 
 	@Override
 	protected void buildRecipes(RecipeOutput recipeOutput) {
-		new JewelingStationRecipeBuilder(
-				ModItems.SPRINGBOOTS_ITEM.get().getDefaultInstance(),
-				Ingredient.of(ModItems.SPRING_ITEM.get()), // front
-				Ingredient.of(ModItems.SPRING_ITEM.get()), // left
-				Ingredient.of(ModItems.SPRING_ITEM.get()), // right
-				Ingredient.of(Items.LEATHER_BOOTS), // back
-				Ingredient.of(Items.DIAMOND) // tool
-		).unlockedBy("spring", has(ModItems.SPRING_ITEM.get())).save(recipeOutput);
+		new JewelingStationRecipeBuilder(ModItems.SPRINGBOOTS_ITEM.get().getDefaultInstance())
+				.setFront(Ingredient.of(ModItems.SPRING_ITEM.get()))
+				.setLeft(Ingredient.of(ModItems.SPRING_ITEM.get()))
+				.setRight(Ingredient.of(ModItems.SPRING_ITEM.get()))
+				.setBack(Ingredient.of(Items.LEATHER_BOOTS))
+				.addTool(Ingredient.of(Items.DIAMOND))
+				.unlockedBy("spring", has(ModItems.SPRING_ITEM.get())).save(recipeOutput);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.JEWELINGSTATION_BLOCK_ITEM.get())
 				.pattern("X#X")

@@ -10,21 +10,23 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
+
 public class JewelingStationRecipe implements Recipe<JewelingStationRecipeInput> {
 
 	private final Ingredient front;
 	private final Ingredient left;
 	private final Ingredient right;
 	private final Ingredient back;
-	private final Ingredient tool;
+	private final List<Ingredient> toolSteps;
 	private final ItemStack output;
 
-	public JewelingStationRecipe(Ingredient front, Ingredient left, Ingredient right, Ingredient back, Ingredient tool, ItemStack output) {
+	public JewelingStationRecipe(Ingredient front, Ingredient left, Ingredient right, Ingredient back, List<Ingredient> toolSteps, ItemStack output) {
 		this.front = front;
 		this.left = left;
 		this.right = right;
 		this.back = back;
-		this.tool = tool;
+		this.toolSteps = toolSteps;
 		this.output = output;
 	}
 
@@ -35,7 +37,7 @@ public class JewelingStationRecipe implements Recipe<JewelingStationRecipeInput>
 		list.add(left);
 		list.add(right);
 		list.add(back);
-		list.add(tool);
+		list.addAll(toolSteps);
 		return list;
 	}
 
@@ -53,8 +55,10 @@ public class JewelingStationRecipe implements Recipe<JewelingStationRecipeInput>
 		if(!back.test(jewelingStationRecipeInput.back())) {
 			return false;
 		}
-		if(!tool.test(jewelingStationRecipeInput.tool())) {
-			return false;
+		for(var ingredient : toolSteps) {
+			if(!jewelingStationRecipeInput.hasTool(ingredient)) {
+				return false;
+			}
 		}
 
 		return true;
@@ -86,8 +90,8 @@ public class JewelingStationRecipe implements Recipe<JewelingStationRecipeInput>
 		return back;
 	}
 
-	public Ingredient getTool() {
-		return tool;
+	public List<Ingredient> getToolSteps() {
+		return toolSteps;
 	}
 
 	public ItemStack getResultItem() {
