@@ -20,6 +20,9 @@ public class Handler {
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+		var blockTagsProvider = new Blocks(output, lookupProvider, existingFileHelper);
+		generator.addProvider(event.includeClient(), blockTagsProvider);
+		generator.addProvider(event.includeServer(), new Items(output, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
 		generator.addProvider(event.includeServer(), new Recipes(output, lookupProvider));
 	}
 }
