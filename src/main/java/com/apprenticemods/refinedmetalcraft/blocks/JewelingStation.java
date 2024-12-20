@@ -3,7 +3,10 @@ package com.apprenticemods.refinedmetalcraft.blocks;
 import com.apprenticemods.refinedmetalcraft.setup.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -43,11 +46,16 @@ public class JewelingStation extends Block implements EntityBlock {
 		}
 
 		if(level.getBlockEntity(pos) instanceof JewelingStationEntity jewelingStation) {
-			jewelingStation.outputInventoryHandler.setStackInSlot(0, new ItemStack(Items.DIAMOND, 1));
+			player.openMenu(state.getMenuProvider(level, pos), pos);
 			return InteractionResult.CONSUME;
 		}
 
 		return super.useWithoutItem(state, level, pos, player, hitResult);
+	}
+
+	@Override
+	protected @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+		return new SimpleMenuProvider((id, inv, player) -> new JewelingStationContainer(id, inv, level, pos), Component.translatable("container.refinedmetalcraft.jewelingstation"));
 	}
 
 	@Override

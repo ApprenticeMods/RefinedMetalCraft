@@ -18,5 +18,7 @@
   "tooltip.refinedmetalcraft.front": "Front",
   "tooltip.refinedmetalcraft.back": "Back",
   "tooltip.refinedmetalcraft.left": "Left",
-  "tooltip.refinedmetalcraft.right": "Right"
+  "tooltip.refinedmetalcraft.right": "Right",
+  "container.refinedmetalcraft.jeweling_station.tools": "Tools",
+  "container.refinedmetalcraft.jewelingstation": "Jeweling Station"
 }

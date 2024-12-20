@@ -17,6 +17,7 @@ public class Registration {
 		ModItems.ITEMS.register(modbus);
 		ModRecipes.RECIPE_TYPES.register(modbus);
 		ModRecipes.RECIPE_SERIALIZERS.register(modbus);
+		ModContainers.CONTAINERS.register(modbus);
 		CREATIVE_MODE_TABS.register(modbus);
 	}
 
