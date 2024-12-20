@@ -105,7 +105,7 @@ public class JewelingStationEntity extends BlockEntity {
 
 				// TODO: We should check all the jeweling station recipes to get a list of valid tools
 				boolean stackHasToolTag = BuiltInRegistries.ITEM.getOrCreateTag(ModTags.JEWELING_TOOL_TAG).stream().anyMatch(stack::is);
-				return stackHasToolTag || true;
+				return stackHasToolTag;
 			}
 
 		};
