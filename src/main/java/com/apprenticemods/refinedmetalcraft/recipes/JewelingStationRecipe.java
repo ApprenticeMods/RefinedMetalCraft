@@ -41,6 +41,23 @@ public class JewelingStationRecipe implements Recipe<JewelingStationRecipeInput>
 		return list;
 	}
 
+	public boolean matches(JewelingStationRecipeInputNoTools jewelingStationRecipeInput, Level level) {
+		if(!front.test(jewelingStationRecipeInput.front())) {
+			return false;
+		}
+		if(!left.test(jewelingStationRecipeInput.left())) {
+			return false;
+		}
+		if(!right.test(jewelingStationRecipeInput.right())) {
+			return false;
+		}
+		if(!back.test(jewelingStationRecipeInput.back())) {
+			return false;
+		}
+
+		return true;
+	}
+
 	@Override
 	public boolean matches(JewelingStationRecipeInput jewelingStationRecipeInput, Level level) {
 		if(!front.test(jewelingStationRecipeInput.front())) {
@@ -55,6 +72,7 @@ public class JewelingStationRecipe implements Recipe<JewelingStationRecipeInput>
 		if(!back.test(jewelingStationRecipeInput.back())) {
 			return false;
 		}
+
 		for(var ingredient : toolSteps) {
 			if(!jewelingStationRecipeInput.hasTool(ingredient)) {
 				return false;

@@ -1,7 +1,10 @@
 package com.apprenticemods.refinedmetalcraft.blocks;
 
+import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
 import com.apprenticemods.refinedmetalcraft.base.BaseBlockEntity;
 import com.apprenticemods.refinedmetalcraft.base.util.DirectionUtils;
+import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipe;
+import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipeInputNoTools;
 import com.apprenticemods.refinedmetalcraft.setup.Cache;
 import com.apprenticemods.refinedmetalcraft.setup.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -9,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,6 +25,7 @@ import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class JewelingStationEntity extends BaseBlockEntity {
 	public ItemStackHandler outputInventoryHandler;
@@ -29,6 +34,9 @@ public class JewelingStationEntity extends BaseBlockEntity {
 
 	public IItemHandler combinedInventoryHandler;
 	public Map<Direction, RangedWrapper> sideInventoryHandlers;
+
+	public RecipeHolder<JewelingStationRecipe> currentRecipe;
+	public int currentRecipeProgress;
 
 	public JewelingStationEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlocks.JEWELINGSTATION_ENTITY.get(), pos, blockState);
@@ -44,7 +52,37 @@ public class JewelingStationEntity extends BaseBlockEntity {
 		}
 	}
 
+	public JewelingStationRecipeInputNoTools getInputs() {
+		return new JewelingStationRecipeInputNoTools(
+				inputInventoryHandler.getStackInSlot(Direction.SOUTH.get2DDataValue()),
+				inputInventoryHandler.getStackInSlot(Direction.WEST.get2DDataValue()),
+				inputInventoryHandler.getStackInSlot(Direction.EAST.get2DDataValue()),
+				inputInventoryHandler.getStackInSlot(Direction.NORTH.get2DDataValue())
+		);
+	}
 
+	public void updateRecipeInfo() {
+		Set<RecipeHolder<JewelingStationRecipe>> possibleRecipes = Cache.getPossibleRecipes(this.getInputs());
+		if(possibleRecipes.size() == 1) {
+			RecipeHolder<JewelingStationRecipe> recipeHolder = possibleRecipes.iterator().next();
+			JewelingStationRecipe recipe = recipeHolder.value();
+			if(recipe.matches(this.getInputs(), level)) {
+				RefinedMetalCraft.LOGGER.info("Matching recipe: {}", recipeHolder.id());
+				if(this.currentRecipe == null || this.currentRecipe != recipeHolder) {
+					this.currentRecipe = recipeHolder;
+					this.currentRecipeProgress = 0;
+					return;
+				}
+			} else {
+				RefinedMetalCraft.LOGGER.info("Matching, but incomplete recipe: {}", recipeHolder.id());
+			}
+		} else {
+			RefinedMetalCraft.LOGGER.info("Possible recipes: {} {}", possibleRecipes.size(), possibleRecipes);
+		}
+
+		this.currentRecipe = null;
+		this.currentRecipeProgress = 0;
+	}
 
 	private ItemStackHandler createOutputInventory() {
 		return new ItemStackHandler(1) {
@@ -62,6 +100,7 @@ public class JewelingStationEntity extends BaseBlockEntity {
 
 			@Override
 			protected void onContentsChanged(int slot) {
+				updateRecipeInfo();
 				setChanged();
 				notifyClients(false);
 			}
@@ -70,6 +109,13 @@ public class JewelingStationEntity extends BaseBlockEntity {
 			public int getSlotLimit(int slot) {
 				return 1;
 			}
+
+			@Override
+			public boolean isItemValid(int slot, ItemStack stack) {
+				var side = Direction.from2DDataValue(slot);
+				var validIngredients = Cache.getValidIngredients(getInputs(), side);
+				return validIngredients.stream().anyMatch(ingredient -> ingredient.test(stack));
+			}
 		};
 	}
 
@@ -77,6 +123,7 @@ public class JewelingStationEntity extends BaseBlockEntity {
 		return new ItemStackHandler(9) {
 			@Override
 			protected void onContentsChanged(int slot) {
+				updateRecipeInfo();
 				setChanged();
 				notifyClients(false);
 			}
