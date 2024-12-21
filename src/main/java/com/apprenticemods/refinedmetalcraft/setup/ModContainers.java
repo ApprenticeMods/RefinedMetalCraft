@@ -18,8 +18,9 @@ public class ModContainers {
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Registries.MENU, "refinedmetalcraft");
 
 	public static final Supplier<MenuType<JewelingStationContainer>> JEWELING_STATION = CONTAINERS.register(
-			"jeweling_station",
-			resourceLocation -> IMenuTypeExtension.create((i, inventory, registryFriendlyByteBuf) -> new JewelingStationContainer(i, inventory, inventory.player.level(), registryFriendlyByteBuf.readBlockPos()))
+			"jeweling_station", resourceLocation -> IMenuTypeExtension.create(
+					(i, inventory, registryFriendlyByteBuf) -> new JewelingStationContainer(i, inventory, inventory.player.level(), registryFriendlyByteBuf.readBlockPos(), inventory.player)
+			)
 	);
 
 	@SubscribeEvent

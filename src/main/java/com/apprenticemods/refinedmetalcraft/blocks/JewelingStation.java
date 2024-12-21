@@ -53,7 +53,7 @@ public class JewelingStation extends Block implements EntityBlock {
 
 	@Override
 	protected @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-		return new SimpleMenuProvider((id, inv, player) -> new JewelingStationContainer(id, inv, level, pos), Component.translatable("container.refinedmetalcraft.jewelingstation"));
+		return new SimpleMenuProvider((id, inv, player) -> new JewelingStationContainer(id, inv, level, pos, player), Component.translatable("container.refinedmetalcraft.jewelingstation"));
 	}
 
 	@Override
