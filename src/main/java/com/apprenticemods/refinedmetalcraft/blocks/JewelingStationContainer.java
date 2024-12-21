@@ -48,7 +48,9 @@ public class JewelingStationContainer extends WidgetBlockEntityContainer<Jewelin
 			this.addSlotRange(SLOTGROUP_OUTPUT, jewelingStation.outputInventoryHandler, 0, outputSlotX, topSlotY + 9, jewelingStation.outputInventoryHandler.getSlots(), 18);
 		}
 
-
+		this.allowSlotGroupMovement(SLOTGROUP_PLAYER, SLOTGROUP_INPUT, true);
+		this.allowSlotGroupMovement(SLOTGROUP_PLAYER, SLOTGROUP_TOOLS, true);
+		this.allowSlotGroupMovement(SLOTGROUP_OUTPUT, SLOTGROUP_PLAYER);
 
 	}
 }
