@@ -1,0 +1,30 @@
+{
+  "type": "refinedmetalcraft:jewelingstation",
+  "back": {
+    "item": "minecraft:gold_nugget"
+  },
+  "front": {
+    "item": "minecraft:blackstone"
+  },
+  "left": {
+    "item": "minecraft:gold_nugget"
+  },
+  "output": {
+    "count": 1,
+    "id": "minecraft:gilded_blackstone"
+  },
+  "right": {
+    "item": "minecraft:gold_nugget"
+  },
+  "tools": [
+    {
+      "item": "refinedmetalcraft:handdrill"
+    },
+    {
+      "item": "refinedmetalcraft:minihammer"
+    },
+    {
+      "item": "refinedmetalcraft:handgrinder"
+    }
+  ]
+}

@@ -30,6 +30,16 @@ public class Recipes extends RecipeProvider {
 				.addTool(Ingredient.of(Items.DIAMOND))
 				.unlockedBy("spring", has(ModItems.SPRING_ITEM.get())).save(recipeOutput);
 
+		new JewelingStationRecipeBuilder(Items.GILDED_BLACKSTONE.getDefaultInstance())
+				.setFront(Ingredient.of(Items.BLACKSTONE))
+				.setLeft(Ingredient.of(Items.GOLD_NUGGET))
+				.setRight(Ingredient.of(Items.GOLD_NUGGET))
+				.setBack(Ingredient.of(Items.GOLD_NUGGET))
+				.addTool(Ingredient.of(ModItems.HANDDRILL_ITEM.get()))
+				.addTool(Ingredient.of(ModItems.MINIHAMMER_ITEM.get()))
+				.addTool(Ingredient.of(ModItems.HANDGRINDER_ITEM.get()))
+				.unlockedBy("blackstone_and_gold", has(Items.BLACKSTONE)).save(recipeOutput);
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.JEWELINGSTATION_BLOCK_ITEM.get())
 				.pattern("X#X")
 				.pattern("X$X")
