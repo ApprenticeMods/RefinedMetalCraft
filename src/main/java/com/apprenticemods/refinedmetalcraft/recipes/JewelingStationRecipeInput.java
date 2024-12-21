@@ -1,5 +1,6 @@
 package com.apprenticemods.refinedmetalcraft.recipes;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -10,16 +11,17 @@ public record JewelingStationRecipeInput(ItemStack front, ItemStack left, ItemSt
 
 	@Override
 	public ItemStack getItem(int i) {
-		switch(i) {
-			case 0:
+		switch(Direction.from2DDataValue(i)) {
+			case SOUTH:
 				return front;
-			case 1:
+			case WEST:
 				return left;
-			case 2:
+			case EAST:
 				return right;
-			case 3:
+			case NORTH:
 				return back;
 		}
+
 		if(i >= 4 && i < 4 + tools.size()) {
 			return tools.get(i - 4);
 		}
