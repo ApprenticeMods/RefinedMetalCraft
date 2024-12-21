@@ -1,44 +1,52 @@
 package com.apprenticemods.refinedmetalcraft.blocks;
 
+import com.apprenticemods.refinedmetalcraft.base.util.DirectionUtils;
+import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipe;
+import com.apprenticemods.refinedmetalcraft.setup.Cache;
 import com.apprenticemods.refinedmetalcraft.setup.ModBlocks;
-import com.apprenticemods.refinedmetalcraft.setup.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.neoforge.items.wrapper.RangedWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JewelingStationEntity extends BlockEntity {
 	public ItemStackHandler outputInventoryHandler;
-	public ItemStackHandler frontInventoryHandler;
-	public ItemStackHandler rightInventoryHandler;
-	public ItemStackHandler backInventoryHandler;
-	public ItemStackHandler leftInventoryHandler;
+	public ItemStackHandler inputInventoryHandler;
 	public ItemStackHandler toolInventoryHandler;
+
 	public IItemHandler combinedInventoryHandler;
+	public Map<Direction, RangedWrapper> sideInventoryHandlers;
 
 	public JewelingStationEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlocks.JEWELINGSTATION_ENTITY.get(), pos, blockState);
 
 		this.outputInventoryHandler = createOutputInventory();
-		this.frontInventoryHandler = createInputInventory(Direction.NORTH);
-		this.leftInventoryHandler = createInputInventory(Direction.WEST);
-		this.backInventoryHandler = createInputInventory(Direction.SOUTH);
-		this.rightInventoryHandler = createInputInventory(Direction.EAST);
+		this.inputInventoryHandler = createInputInventory();
 		this.toolInventoryHandler = createToolInventory();
 		this.combinedInventoryHandler = createCombinedInventory();
+
+		this.sideInventoryHandlers = new HashMap<>();
+		for(Direction direction : Direction.Plane.HORIZONTAL) {
+			this.sideInventoryHandlers.put(direction, new RangedWrapper(this.inputInventoryHandler, direction.get2DDataValue(), direction.get2DDataValue()+1));
+		}
 	}
 
 	public void notifyClients(boolean all) {
@@ -59,8 +67,8 @@ public class JewelingStationEntity extends BlockEntity {
 		};
 	}
 
-	private ItemStackHandler createInputInventory(Direction side) {
-		var handler = new ItemStackHandler(1) {
+	private ItemStackHandler createInputInventory() {
+		return new ItemStackHandler(4) {
 			Direction side;
 
 			@Override
@@ -74,8 +82,6 @@ public class JewelingStationEntity extends BlockEntity {
 				return 1;
 			}
 		};
-		handler.side = side;
-		return handler;
 	}
 
 	private ItemStackHandler createToolInventory() {
@@ -114,10 +120,7 @@ public class JewelingStationEntity extends BlockEntity {
 	private IItemHandler createCombinedInventory() {
 		return new CombinedInvWrapper(
 				outputInventoryHandler,
-				frontInventoryHandler,
-				rightInventoryHandler,
-				backInventoryHandler,
-				leftInventoryHandler,
+				inputInventoryHandler,
 				toolInventoryHandler
 		) {
 			@Nonnull
@@ -142,39 +145,24 @@ public class JewelingStationEntity extends BlockEntity {
 
 	}
 
-	private void loadFirstStackFromTag(String label, ItemStackHandler handler, CompoundTag tag, HolderLookup.Provider registries) {
-		if(tag.contains(label)) {
-			handler.setStackInSlot(0, ItemStack.parse(registries, tag.getCompound(label)).orElse(ItemStack.EMPTY));
-		}
+	public void redstonePulse() {
+
 	}
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.loadAdditional(tag, registries);
-		loadFirstStackFromTag("output", outputInventoryHandler, tag, registries);
-		loadFirstStackFromTag("front", frontInventoryHandler, tag, registries);
-		loadFirstStackFromTag("right", rightInventoryHandler, tag, registries);
-		loadFirstStackFromTag("back", backInventoryHandler, tag, registries);
-		loadFirstStackFromTag("left", leftInventoryHandler, tag, registries);
-		toolInventoryHandler.deserializeNBT(registries, tag.getCompound("tools"));
-	}
 
-	private CompoundTag saveFirstStackToTag(String label, ItemStackHandler handler, CompoundTag tag, HolderLookup.Provider registries) {
-		var stack = handler.getStackInSlot(0);
-		if(!stack.isEmpty()) {
-			tag.put(label, stack.save(registries, new CompoundTag()));
-		}
-		return tag;
+		inputInventoryHandler.deserializeNBT(registries, tag.getCompound("input"));
+		outputInventoryHandler.deserializeNBT(registries, tag.getCompound("output"));
+		toolInventoryHandler.deserializeNBT(registries, tag.getCompound("tools"));
 	}
 
 	@Override
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
-		saveFirstStackToTag("output", outputInventoryHandler, tag, registries);
-		saveFirstStackToTag("front", frontInventoryHandler, tag, registries);
-		saveFirstStackToTag("right", rightInventoryHandler, tag, registries);
-		saveFirstStackToTag("back", backInventoryHandler, tag, registries);
-		saveFirstStackToTag("left", leftInventoryHandler, tag, registries);
+		tag.put("input", inputInventoryHandler.serializeNBT(registries));
+		tag.put("output", outputInventoryHandler.serializeNBT(registries));
 		tag.put("tools", toolInventoryHandler.serializeNBT(registries));
 	}
 

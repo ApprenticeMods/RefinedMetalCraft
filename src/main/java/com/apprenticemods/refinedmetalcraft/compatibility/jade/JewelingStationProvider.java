@@ -1,6 +1,7 @@
 package com.apprenticemods.refinedmetalcraft.compatibility.jade;
 
 import com.apprenticemods.refinedmetalcraft.blocks.JewelingStationEntity;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -17,16 +18,20 @@ public class JewelingStationProvider implements IBlockComponentProvider {
 	public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
 		JewelingStationEntity jewelingStationEntity = (JewelingStationEntity) blockAccessor.getBlockEntity();
 
-		appendItem(iTooltip, "front", jewelingStationEntity.frontInventoryHandler);
-		appendItem(iTooltip, "back", jewelingStationEntity.backInventoryHandler);
-		appendItem(iTooltip, "left", jewelingStationEntity.leftInventoryHandler);
-		appendItem(iTooltip, "right", jewelingStationEntity.rightInventoryHandler);
+		appendItem(iTooltip, "front", jewelingStationEntity.inputInventoryHandler, Direction.SOUTH.get2DDataValue());
+		appendItem(iTooltip, "back", jewelingStationEntity.inputInventoryHandler, Direction.NORTH.get2DDataValue());
+		appendItem(iTooltip, "left", jewelingStationEntity.inputInventoryHandler, Direction.WEST.get2DDataValue());
+		appendItem(iTooltip, "right", jewelingStationEntity.inputInventoryHandler, Direction.EAST.get2DDataValue());
 		appendItem(iTooltip, "output", jewelingStationEntity.outputInventoryHandler);
 		appendTools(iTooltip, jewelingStationEntity.toolInventoryHandler);
 	}
 
 	private void appendItem(ITooltip iTooltip, String side, ItemStackHandler inventory) {
-		ItemStack item = inventory.getStackInSlot(0);
+		appendItem(iTooltip, side, inventory, 0);
+	}
+
+	private void appendItem(ITooltip iTooltip, String side, ItemStackHandler inventory, int slot) {
+		ItemStack item = inventory.getStackInSlot(slot);
 		if(!item.isEmpty()) {
 			iTooltip.add(Component.translatable("tooltip.refinedmetalcraft." + side));
 			iTooltip.append(IElementHelper.get().item(item, 0.5f).size(new Vec2(8, 8)).translate(new Vec2(0, -1)));

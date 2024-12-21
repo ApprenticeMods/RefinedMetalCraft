@@ -4,6 +4,7 @@ import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
 import com.apprenticemods.refinedmetalcraft.base.gui.WidgetContainer;
 import com.apprenticemods.refinedmetalcraft.setup.ModContainers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
@@ -38,10 +39,10 @@ public class JewelingStationContainer extends WidgetContainer {
 		if(jewelingStation != null) {
 			this.addSlotRange(SLOTGROUP_TOOLS, jewelingStation.toolInventoryHandler, 0, MARGIN, toolSlotsY, jewelingStation.toolInventoryHandler.getSlots(), 18);
 
-			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.frontInventoryHandler, 0, centerSlotX, bottomSlotY, 1, 18);
-			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.leftInventoryHandler, 0, leftSlotX, bottomSlotY, 1, 18);
-			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.rightInventoryHandler, 0, rightSlotX, bottomSlotY, 1, 18);
-			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.backInventoryHandler, 0, centerSlotX, topSlotY, 1, 18);
+			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.inputInventoryHandler, Direction.SOUTH.get2DDataValue(), centerSlotX, bottomSlotY, 1, 18);
+			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.inputInventoryHandler, Direction.WEST.get2DDataValue(), leftSlotX, bottomSlotY, 1, 18);
+			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.inputInventoryHandler, Direction.EAST.get2DDataValue(), rightSlotX, bottomSlotY, 1, 18);
+			this.addSlotRange(SLOTGROUP_INPUT, jewelingStation.inputInventoryHandler, Direction.NORTH.get2DDataValue(), centerSlotX, topSlotY, 1, 18);
 
 			this.addSlotRange(SLOTGROUP_OUTPUT, jewelingStation.outputInventoryHandler, 0, outputSlotX, topSlotY + 9, jewelingStation.outputInventoryHandler.getSlots(), 18);
 		}
