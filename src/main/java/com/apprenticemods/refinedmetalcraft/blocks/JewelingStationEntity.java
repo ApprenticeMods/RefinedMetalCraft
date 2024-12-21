@@ -137,11 +137,28 @@ public class JewelingStationEntity extends BlockEntity {
 		};
 	}
 
-	public void tick() {
+	public static IItemHandler getCapability(Level level, BlockPos pos, BlockState state, BlockEntity entity, Direction side) {
+		if(entity instanceof JewelingStationEntity jewelingStation) {
+			if(side == null) {
+				return jewelingStation.combinedInventoryHandler;
+			}
 
+			if(side == Direction.DOWN) {
+				return jewelingStation.outputInventoryHandler;
+			}
+
+			if(side == Direction.UP) {
+				return jewelingStation.toolInventoryHandler;
+			}
+
+			Direction faceAdjustedDirection = DirectionUtils.rotatedBlockSide(state.getValue(BlockStateProperties.FACING), side);
+			return jewelingStation.sideInventoryHandlers.get(faceAdjustedDirection);
+		}
+
+		return null;
 	}
 
-	public void redstonePulse() {
+	public void tick() {
 
 	}
 

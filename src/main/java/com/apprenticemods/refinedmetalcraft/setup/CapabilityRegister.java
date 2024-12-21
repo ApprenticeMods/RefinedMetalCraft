@@ -12,53 +12,14 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 @EventBusSubscriber(modid = RefinedMetalCraft.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CapabilityRegister {
 
-    @SubscribeEvent
-    public static void onCapabilityRegister(RegisterCapabilitiesEvent event) {
-        event.registerBlock(
-                Capabilities.ItemHandler.BLOCK,
-                (level, pos, state, blockEntity, side) -> {
-                    if(blockEntity instanceof JewelingStationEntity jewelingStation) {
-                        if(side == null) {
-                            return jewelingStation.combinedInventoryHandler;
-                        }
+	@SubscribeEvent
+	public static void onCapabilityRegister(RegisterCapabilitiesEvent event) {
 
-                        if(side == Direction.DOWN) {
-                            return jewelingStation.outputInventoryHandler;
-                        }
-
-                        if(side == Direction.UP) {
-                            return jewelingStation.toolInventoryHandler;
-                        }
-
-                        //  side     direction    inventory
-                        //  NORTH    NORTH        NORTH
-                        //  NORTH    EAST         ?
-                        //  ...
-                        //  WEST     SOUTH        ?
-                        Direction facing = state.getValue(BlockStateProperties.FACING);
-                        int rotateForNorth = facing.get2DDataValue() % 4;
-                        Direction actualSide = side;
-                        for(int i = 0; i < rotateForNorth; i++) {
-                            actualSide = actualSide.getClockWise();
-                        }
-
-                        if(actualSide == Direction.NORTH) {
-                            return jewelingStation.frontInventoryHandler;
-                        }
-                        if(actualSide == Direction.EAST) {
-                            return jewelingStation.rightInventoryHandler;
-                        }
-                        if(actualSide == Direction.SOUTH) {
-                            return jewelingStation.backInventoryHandler;
-                        }
-                        if(actualSide == Direction.WEST) {
-                            return jewelingStation.leftInventoryHandler;
-                        }
-                    }
-                    return null;
-                },
-                ModBlocks.JEWELINGSTATION_BLOCK.get()
-        );
-    }
+		event.registerBlock(
+			Capabilities.ItemHandler.BLOCK,
+			JewelingStationEntity::getCapability,
+			ModBlocks.JEWELINGSTATION_BLOCK.get()
+		);
+	}
 
 }
