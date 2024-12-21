@@ -1,15 +1,16 @@
 package com.apprenticemods.refinedmetalcraft.blocks;
 
 import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
-import com.apprenticemods.refinedmetalcraft.base.gui.WidgetContainer;
+import com.apprenticemods.refinedmetalcraft.base.gui.WidgetBlockEntityContainer;
 import com.apprenticemods.refinedmetalcraft.setup.ModContainers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class JewelingStationContainer extends WidgetContainer {
+public class JewelingStationContainer extends WidgetBlockEntityContainer<JewelingStationEntity> {
 	public static int WIDTH = 176;
 	public static int HEIGHT = 205;
 	public static int MARGIN = 8;
@@ -20,8 +21,8 @@ public class JewelingStationContainer extends WidgetContainer {
 
 	private JewelingStationEntity jewelingStation;
 
-	public JewelingStationContainer(int id, Inventory inv, Level world, BlockPos pos) {
-		super(ModContainers.JEWELING_STATION.get(), id, inv);
+	public JewelingStationContainer(int id, Inventory inv, Level world, BlockPos pos, Player player) {
+		super(ModContainers.JEWELING_STATION.get(), id, pos, inv, player);
 
 		int availableWidth = WIDTH - (MARGIN * 2);
 		int outputSlotX = MARGIN + (3 * availableWidth / 4) + 9;
