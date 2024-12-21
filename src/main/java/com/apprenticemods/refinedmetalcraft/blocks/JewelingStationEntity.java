@@ -1,18 +1,14 @@
 package com.apprenticemods.refinedmetalcraft.blocks;
 
+import com.apprenticemods.refinedmetalcraft.base.BaseBlockEntity;
 import com.apprenticemods.refinedmetalcraft.base.util.DirectionUtils;
-import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipe;
 import com.apprenticemods.refinedmetalcraft.setup.Cache;
 import com.apprenticemods.refinedmetalcraft.setup.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,13 +17,12 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import net.neoforged.neoforge.items.wrapper.RangedWrapper;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JewelingStationEntity extends BlockEntity {
+public class JewelingStationEntity extends BaseBlockEntity {
 	public ItemStackHandler outputInventoryHandler;
 	public ItemStackHandler inputInventoryHandler;
 	public ItemStackHandler toolInventoryHandler;
@@ -49,13 +44,7 @@ public class JewelingStationEntity extends BlockEntity {
 		}
 	}
 
-	public void notifyClients(boolean all) {
-		if (this.level != null) {
-			if (!this.level.isClientSide()) {
-				this.level.sendBlockUpdated(this.worldPosition, this.level.getBlockState(this.worldPosition), this.level.getBlockState(this.worldPosition), all ? 3 : 2);
-			}
-		}
-	}
+
 
 	private ItemStackHandler createOutputInventory() {
 		return new ItemStackHandler(1) {
@@ -183,17 +172,6 @@ public class JewelingStationEntity extends BlockEntity {
 		tag.put("tools", toolInventoryHandler.serializeNBT(registries));
 	}
 
-	@Override
-	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		CompoundTag tag = super.getUpdateTag(registries);
-		saveAdditional(tag, registries);
-		return tag;
-	}
-
-	@Override
-	public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
-	}
 
 
 }
