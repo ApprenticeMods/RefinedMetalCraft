@@ -6,11 +6,13 @@ import com.apprenticemods.refinedmetalcraft.base.util.DirectionUtils;
 import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipe;
 import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipeInputNoTools;
 import com.apprenticemods.refinedmetalcraft.setup.Cache;
+import com.apprenticemods.refinedmetalcraft.setup.Config;
 import com.apprenticemods.refinedmetalcraft.setup.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -202,7 +204,69 @@ public class JewelingStationEntity extends BaseBlockEntity {
 	}
 
 	public void redstonePulse() {
+		tryProgress();
+	}
 
+	public void tryProgress() {
+		if(level == null || level.isClientSide()) {
+			return;
+		}
+
+		if(currentRecipe == null) {
+			return;
+		}
+
+		var toolSteps = this.currentRecipe.value().getToolSteps();
+		if(currentRecipeProgress > toolSteps.size()) {
+			RefinedMetalCraft.LOGGER.warn("Recipe progress is greater than tool steps size. This should be unreachable code.");
+		}
+
+		var nextTool = toolSteps.get(this.currentRecipeProgress);
+		boolean hasTool = false;
+		for(int i = 0; i < toolInventoryHandler.getSlots(); i++) {
+			if(nextTool.test(toolInventoryHandler.getStackInSlot(i))) {
+				// Found the tool
+				hasTool = true;
+				if(!Config.jewelingStationToolDamageEnabled) {
+					break;
+				}
+
+				ItemStack toolStack = toolInventoryHandler.getStackInSlot(i);
+				if(!toolStack.isDamageableItem()) {
+					break;
+				}
+
+				int maxDamage = toolStack.getMaxDamage();
+				int damageToApply = maxDamage / Config.jewelingStationToolDamageQuantile;
+				if(toolStack.getDamageValue() + damageToApply >= maxDamage) {
+					continue;
+				}
+
+				toolStack.hurtAndBreak(damageToApply, (ServerLevel) level, null, item -> {
+					RefinedMetalCraft.LOGGER.debug("Tool broke: {}", item);
+				});
+
+				toolInventoryHandler.setStackInSlot(i, toolStack);
+				break;
+			}
+		}
+
+		if(!hasTool) {
+			return;
+		}
+
+		this.currentRecipeProgress++;
+		if(currentRecipeProgress >= toolSteps.size()) {
+			ItemStack output = currentRecipe.value().getResultItem().copy();
+			outputInventoryHandler.insertItem(0, output, false);
+			currentRecipeProgress = 0;
+			for(int i = 0; i < inputInventoryHandler.getSlots(); i++) {
+				inputInventoryHandler.extractItem(i, 1, false);
+			}
+		}
+
+		this.setChanged();
+		this.notifyClients(false);
 	}
 
 	@Override

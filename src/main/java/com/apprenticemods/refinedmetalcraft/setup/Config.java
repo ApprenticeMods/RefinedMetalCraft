@@ -17,12 +17,20 @@ public class Config {
 			.comment("Dampening factor to be applied when using spring boots")
 			.defineInRange("dampeningFactor", 0.8, 0, 10);
 
-	
+
+	public static boolean jewelingStationToolDamageEnabled;
+	public static int jewelingStationToolDamageQuantile;
+	public static final ModConfigSpec.IntValue JEWELING_STATION_TOOL_DAMAGE_QUANTILE = BUILDER
+			.comment("How often can a tool be used in the jeweling station before it breaks. Set to 0 to disable tool damage.")
+			.defineInRange("jewelingStationToolDamageQuantile", 16, 0, Integer.MAX_VALUE);
+
 	public static final ModConfigSpec SPEC = BUILDER.build();
 
 
 	@SubscribeEvent
 	static void onLoad(final ModConfigEvent event) {
 		dampeningFactor = DAMPENING_FACTOR.get();
+		jewelingStationToolDamageQuantile = JEWELING_STATION_TOOL_DAMAGE_QUANTILE.get();
+		jewelingStationToolDamageEnabled = jewelingStationToolDamageQuantile != 0 && jewelingStationToolDamageQuantile != Integer.MAX_VALUE;
 	}
 }
