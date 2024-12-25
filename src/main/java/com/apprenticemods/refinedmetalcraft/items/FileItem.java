@@ -7,7 +7,6 @@ public class FileItem extends Item {
 
 
     public FileItem() {
-        super(new Item.Properties().fireResistant().stacksTo(64).rarity(Rarity.COMMON));
+        super(new Item.Properties().fireResistant().stacksTo(64).rarity(Rarity.COMMON).durability(16));
     }
 }
-

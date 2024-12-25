@@ -238,7 +238,7 @@ public class JewelingStationEntity extends BaseBlockEntity {
 
 				int maxDamage = toolStack.getMaxDamage();
 				int damageToApply = maxDamage / Config.jewelingStationToolDamageQuantile;
-				if(toolStack.getDamageValue() + damageToApply >= maxDamage) {
+				if(toolStack.getDamageValue() + damageToApply > maxDamage) {
 					continue;
 				}
 
