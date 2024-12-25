@@ -7,6 +7,7 @@ import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipe;
 import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipeInputNoTools;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -22,8 +23,11 @@ import java.util.stream.Collectors;
 public class Cache {
 	public static CacheStorage<Set<Item>> JEWELING_TOOLS = new CacheStorage<>(() -> TagUtils.getTags(BuiltInRegistries.ITEM, ModTags.JEWELING_TOOL_TAG));
 	public static CacheStorage<List<RecipeHolder<JewelingStationRecipe>>> JEWELING_RECIPES = new CacheStorage<>(Collections.emptyList());
+	public static CacheStorage<Map<ResourceLocation, RecipeHolder<JewelingStationRecipe>>> JEWELING_RECIPE_MAP = new CacheStorage<>(Collections.emptyMap());
+
 	public static Map<JewelingStationRecipeInputNoTools, Set<RecipeHolder<JewelingStationRecipe>>> JEWELING_RECIPE_LOOKUP = new HashMap<>();
 	public static Map<Direction, Map<JewelingStationRecipeInputNoTools, Set<Ingredient>>> JEWELING_INGREDIENT_LOOKUP = new HashMap<>();
+
 
 	public static Set<Ingredient> getValidIngredients(JewelingStationRecipeInputNoTools input, Direction side) {
 		if(!JEWELING_INGREDIENT_LOOKUP.containsKey(side)) {
@@ -90,10 +94,12 @@ public class Cache {
 			event.getRecipeManager().getAllRecipesFor(ModRecipes.JEWELING_STATION_RECIPE.get())
 		);
 
+		var recipeMap = new HashMap<ResourceLocation, RecipeHolder<JewelingStationRecipe>>();
 		JEWELING_RECIPES.get().forEach(recipeHolder -> {
-			JewelingStationRecipe recipe = recipeHolder.value();
 			RefinedMetalCraft.LOGGER.info("Loaded jeweling station recipe: {}", recipeHolder.id());
+			recipeMap.put(recipeHolder.id(), recipeHolder);
 		});
+		JEWELING_RECIPE_MAP.update(recipeMap);
 
 		JEWELING_RECIPE_LOOKUP.clear();
 		JEWELING_INGREDIENT_LOOKUP.clear();

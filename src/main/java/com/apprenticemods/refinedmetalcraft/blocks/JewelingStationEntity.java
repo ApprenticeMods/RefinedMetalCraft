@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -67,17 +68,19 @@ public class JewelingStationEntity extends BaseBlockEntity {
 			RecipeHolder<JewelingStationRecipe> recipeHolder = possibleRecipes.iterator().next();
 			JewelingStationRecipe recipe = recipeHolder.value();
 			if(recipe.matches(this.getInputs(), level)) {
-				RefinedMetalCraft.LOGGER.info("Matching recipe: {}", recipeHolder.id());
-				if(this.currentRecipe == null || this.currentRecipe != recipeHolder) {
-					this.currentRecipe = recipeHolder;
-					this.currentRecipeProgress = 0;
+				if(this.currentRecipe != null && this.currentRecipe.equals(recipeHolder)) {
 					return;
 				}
+
+				RefinedMetalCraft.LOGGER.trace("Matching recipe: {}", recipeHolder.id());
+				this.currentRecipe = recipeHolder;
+				this.currentRecipeProgress = 0;
+				return;
 			} else {
-				RefinedMetalCraft.LOGGER.info("Matching, but incomplete recipe: {}", recipeHolder.id());
+				RefinedMetalCraft.LOGGER.trace("Matching, but incomplete recipe: {}", recipeHolder.id());
 			}
 		} else {
-			RefinedMetalCraft.LOGGER.info("Possible recipes: {} {}", possibleRecipes.size(), possibleRecipes);
+			RefinedMetalCraft.LOGGER.trace("Possible recipes: {} {}", possibleRecipes.size(), possibleRecipes);
 		}
 
 		this.currentRecipe = null;
@@ -209,6 +212,12 @@ public class JewelingStationEntity extends BaseBlockEntity {
 		inputInventoryHandler.deserializeNBT(registries, tag.getCompound("input"));
 		outputInventoryHandler.deserializeNBT(registries, tag.getCompound("output"));
 		toolInventoryHandler.deserializeNBT(registries, tag.getCompound("tools"));
+
+		if(tag.contains("progress")) {
+			currentRecipeProgress = tag.getInt("progress");
+		} else {
+			currentRecipeProgress = 0;
+		}
 	}
 
 	@Override
@@ -217,8 +226,17 @@ public class JewelingStationEntity extends BaseBlockEntity {
 		tag.put("input", inputInventoryHandler.serializeNBT(registries));
 		tag.put("output", outputInventoryHandler.serializeNBT(registries));
 		tag.put("tools", toolInventoryHandler.serializeNBT(registries));
+
+		tag.putInt("progress", currentRecipeProgress);
 	}
 
 
-
+	public boolean hasTool(Ingredient nextTool) {
+		for(int i = 0; i < toolInventoryHandler.getSlots(); i++) {
+			if(nextTool.test(toolInventoryHandler.getStackInSlot(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
