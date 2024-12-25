@@ -18,7 +18,10 @@
   },
   "tools": [
     {
-      "item": "minecraft:diamond"
+      "item": "refinedmetalcraft:pliers"
+    },
+    {
+      "item": "refinedmetalcraft:minihammer"
     }
   ]
 }

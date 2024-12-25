@@ -27,7 +27,8 @@ public class Recipes extends RecipeProvider {
 				.setLeft(Ingredient.of(ModItems.SPRING_ITEM.get()))
 				.setRight(Ingredient.of(ModItems.SPRING_ITEM.get()))
 				.setBack(Ingredient.of(Items.LEATHER_BOOTS))
-				.addTool(Ingredient.of(Items.DIAMOND))
+				.addTool(Ingredient.of(ModItems.PLIERS_ITEM.get()))
+				.addTool(Ingredient.of(ModItems.MINIHAMMER_ITEM.get()))
 				.unlockedBy("spring", has(ModItems.SPRING_ITEM.get())).save(recipeOutput);
 
 		new JewelingStationRecipeBuilder(Items.GILDED_BLACKSTONE.getDefaultInstance())
