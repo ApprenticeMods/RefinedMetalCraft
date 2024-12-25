@@ -3,16 +3,19 @@ package com.apprenticemods.refinedmetalcraft.blocks;
 import com.apprenticemods.refinedmetalcraft.base.gui.GUI;
 import com.apprenticemods.refinedmetalcraft.base.gui.WidgetContainerScreen;
 import com.apprenticemods.refinedmetalcraft.base.gui.WidgetSlot;
+import com.apprenticemods.refinedmetalcraft.base.gui.event.MouseClickEvent;
 import com.apprenticemods.refinedmetalcraft.base.gui.event.UpdateScreenEvent;
 import com.apprenticemods.refinedmetalcraft.base.gui.event.WidgetEventResult;
 import com.apprenticemods.refinedmetalcraft.base.gui.widgets.WidgetItemStack;
 import com.apprenticemods.refinedmetalcraft.base.gui.widgets.WidgetProgressArrow;
 import com.apprenticemods.refinedmetalcraft.base.gui.widgets.WidgetTextBox;
+import com.apprenticemods.refinedmetalcraft.networking.BlockTrigger;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class JewelingStationScreen extends WidgetContainerScreen<JewelingStationContainer> {
 	public JewelingStationScreen(JewelingStationContainer container, Inventory inv, Component name) {
@@ -36,6 +39,10 @@ public class JewelingStationScreen extends WidgetContainerScreen<JewelingStation
 
 		var nextToolButton = new WidgetItemStack(ItemStack.EMPTY, false);
 		nextToolButton.setPosition(95 + 3, 19);
+		nextToolButton.addListener(MouseClickEvent.class, (event, widget) -> {
+			PacketDistributor.sendToServer(new BlockTrigger(this.menu.getBlockEntity().getBlockPos()));
+			return WidgetEventResult.CONTINUE_PROCESSING;
+		});
 		gui.add(nextToolButton);
 
 		JewelingStationEntity station = this.menu.getBlockEntity();
