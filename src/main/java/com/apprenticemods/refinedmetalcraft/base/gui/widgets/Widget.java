@@ -115,6 +115,11 @@ public class Widget {
 		return this;
 	}
 
+	public Widget insertTooltipLine(int index, Component line) {
+		this.tooltipLines.add(index, line);
+		return this;
+	}
+
 	public boolean areAllParentsVisible() {
 		return isVisible() && (parent == null || parent.areAllParentsVisible());
 	}

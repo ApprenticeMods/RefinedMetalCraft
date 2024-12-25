@@ -35,4 +35,8 @@ public class WidgetBlockEntityContainer<T extends BlockEntity> extends WidgetCon
 
 		return false;
 	}
+
+	public T getBlockEntity() {
+		return blockEntity;
+	}
 }

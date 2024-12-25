@@ -14,6 +14,8 @@ import java.util.Collections;
 
 public class WidgetItemStack extends WidgetWithValue<ItemStack> {
 	boolean drawSlot = false;
+	float saturation = 1.0F;
+	float opacity = 1.0F;
 
 	public WidgetItemStack(ItemStack stack) {
 		this.setSize(16, 16);
@@ -23,6 +25,22 @@ public class WidgetItemStack extends WidgetWithValue<ItemStack> {
 	public WidgetItemStack(ItemStack stack, boolean drawSlot) {
 		this(stack);
 		this.drawSlot = drawSlot;
+	}
+
+
+	public WidgetItemStack setDrawSlot(boolean drawSlot) {
+		this.drawSlot = drawSlot;
+		return this;
+	}
+
+	public WidgetItemStack setOpacity(float opacity) {
+		this.opacity = opacity;
+		return this;
+	}
+
+	public WidgetItemStack setSaturation(float saturation) {
+		this.saturation = saturation;
+		return this;
 	}
 
 	public void setValue(ItemStack stack) {
@@ -49,7 +67,11 @@ public class WidgetItemStack extends WidgetWithValue<ItemStack> {
 			return;
 		}
 
-		GUIHelper.renderGuiItem(pGuiGraphics, this.value, getActualX(), getActualY(), !this.enabled);
+
+		var oldColor = RenderSystem.getShaderColor();
+		RenderSystem.setShaderColor(saturation, saturation, saturation, opacity);
+		pGuiGraphics.renderItem(this.value, 0, 0);
+		RenderSystem.setShaderColor(oldColor[0], oldColor[1], oldColor[2], oldColor[3]);
 	}
 
 	private void drawSlot(GuiGraphics pGuiGraphics, Screen screen) {
