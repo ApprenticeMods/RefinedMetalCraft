@@ -16,6 +16,7 @@ public class WidgetItemStack extends WidgetWithValue<ItemStack> {
 	boolean drawSlot = false;
 	float saturation = 1.0F;
 	float opacity = 1.0F;
+	boolean drawTooltip = true;
 
 	public WidgetItemStack(ItemStack stack) {
 		this.setSize(16, 16);
@@ -33,6 +34,12 @@ public class WidgetItemStack extends WidgetWithValue<ItemStack> {
 		return this;
 	}
 
+	public WidgetItemStack setDrawTooltip(boolean drawTooltip) {
+		this.drawTooltip = drawTooltip;
+		this.setValue(this.value);
+		return this;
+	}
+
 	public WidgetItemStack setOpacity(float opacity) {
 		this.opacity = opacity;
 		return this;
@@ -44,12 +51,14 @@ public class WidgetItemStack extends WidgetWithValue<ItemStack> {
 	}
 
 	public void setValue(ItemStack stack) {
-		if(!stack.isEmpty()) {
-
-			var tooltipFlag = Minecraft.getInstance().options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL;
-			this.setTooltipLines(stack.getTooltipLines(Item.TooltipContext.EMPTY, Minecraft.getInstance().player, tooltipFlag));
-		} else {
-			this.setTooltipLines(Collections.emptyList());
+		this.setTooltipLines(Collections.emptyList());
+		if(this.drawTooltip) {
+			if(!stack.isEmpty()) {
+				var tooltipFlag = Minecraft.getInstance().options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL;
+				this.setTooltipLines(stack.getTooltipLines(Item.TooltipContext.EMPTY,
+						Minecraft.getInstance().player,
+						tooltipFlag));
+			}
 		}
 
 		super.setValue(stack);
