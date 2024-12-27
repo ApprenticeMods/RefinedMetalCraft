@@ -1,11 +1,15 @@
 package com.apprenticemods.refinedmetalcraft.blocks;
 
+import com.apprenticemods.refinedmetalcraft.base.gui.ColorHelper;
 import com.apprenticemods.refinedmetalcraft.base.gui.GUI;
 import com.apprenticemods.refinedmetalcraft.base.gui.WidgetContainerScreen;
 import com.apprenticemods.refinedmetalcraft.base.gui.WidgetSlot;
 import com.apprenticemods.refinedmetalcraft.base.gui.event.MouseClickEvent;
 import com.apprenticemods.refinedmetalcraft.base.gui.event.UpdateScreenEvent;
 import com.apprenticemods.refinedmetalcraft.base.gui.event.WidgetEventResult;
+import com.apprenticemods.refinedmetalcraft.base.gui.tooltip.CombinedTooltipComponent;
+import com.apprenticemods.refinedmetalcraft.base.gui.tooltip.ItemStackTooltipComponent;
+import com.apprenticemods.refinedmetalcraft.base.gui.tooltip.SpriteTooltipComponent;
 import com.apprenticemods.refinedmetalcraft.base.gui.widgets.WidgetItemStack;
 import com.apprenticemods.refinedmetalcraft.base.gui.widgets.WidgetProgressArrow;
 import com.apprenticemods.refinedmetalcraft.base.gui.widgets.WidgetTextBox;
@@ -15,7 +19,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.network.PacketDistributor;
+
+import java.util.Collections;
 
 public class JewelingStationScreen extends WidgetContainerScreen<JewelingStationContainer> {
 	public JewelingStationScreen(JewelingStationContainer container, Inventory inv, Component name) {
@@ -66,14 +73,45 @@ public class JewelingStationScreen extends WidgetContainerScreen<JewelingStation
 			if(!toolSteps.isEmpty()) {
 				var nextTool = toolSteps.get(station.currentRecipeProgress);
 				nextToolButton.setValue(nextTool.getItems()[0]);
+				nextToolButton.setTooltipLines(Collections.emptyList());
 				if(station.hasTool(nextTool)) {
 					nextToolButton.setSaturation(1.0F);
 					nextToolButton.setOpacity(1.0F);
-					nextToolButton.insertTooltipLine(0, Component.translatable("tooltip.refinedmetalcraft.next_tool"));
+					nextToolButton.addTooltipLine(
+							Component.translatable("tooltip.refinedmetalcraft.next_tool")
+									.withColor(ColorHelper.COLOR_ENABLED.getRGB()
+									)
+					);
 				} else {
 					nextToolButton.setSaturation(0.0F);
 					nextToolButton.setOpacity(0.4F);
-					nextToolButton.insertTooltipLine(0, Component.translatable("tooltip.refinedmetalcraft.next_tool_missing"));
+					nextToolButton.addTooltipLine(
+							Component.translatable("tooltip.refinedmetalcraft.next_tool_missing")
+									.withColor(ColorHelper.COLOR_ERRORED.getRGB()
+									)
+					);
+				}
+				nextToolButton.addTooltipLine(Component.translatable("container.refinedmetalcraft.jeweling_station.required_tools"));
+				int step = 0;
+				for(Ingredient tool : toolSteps) {
+					if(tool.hasNoItems()) {
+						continue;
+					}
+					SpriteTooltipComponent sprite;
+					if(station.currentRecipeProgress > step) {
+						sprite = new SpriteTooltipComponent(GUI.tabIcons, 14, 11, 76, 0);
+					} else {
+						if(!station.hasTool(tool)) {
+							sprite = new SpriteTooltipComponent(GUI.tabIcons, 14, 11, 118, 0);
+						} else {
+							sprite = new SpriteTooltipComponent(GUI.tabIcons, 14, 11, 104, 0);
+						}
+					}
+
+					var stack = new ItemStackTooltipComponent(tool.getItems()[0]);
+					var combined = new CombinedTooltipComponent(sprite, stack);
+					nextToolButton.addTooltipElement(combined);
+					step++;
 				}
 
 			}
