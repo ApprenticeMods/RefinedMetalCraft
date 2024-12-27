@@ -29,7 +29,7 @@ public class JewelingStation extends Block implements EntityBlock {
 	public static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 0.875, 1);
 
 	public JewelingStation(Properties properties) {
-		super(properties);
+		super(properties.requiresCorrectToolForDrops());
 
 		this.registerDefaultState(this.getStateDefinition().any()
 				.setValue(BlockStateProperties.FACING, Direction.NORTH)

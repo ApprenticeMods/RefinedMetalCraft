@@ -23,5 +23,6 @@
   "container.refinedmetalcraft.jewelingstation": "Jeweling Station",
   "tooltip.refinedmetalcraft.next_tool": "Click to proceed with crafting",
   "tooltip.refinedmetalcraft.next_tool_missing": "Missing tool!",
-  "tooltip.refinedmetalcraft.tools": "Tools"
+  "tooltip.refinedmetalcraft.tools": "Tools",
+  "container.refinedmetalcraft.jeweling_station.required_tools": "Required Tools:"
 }

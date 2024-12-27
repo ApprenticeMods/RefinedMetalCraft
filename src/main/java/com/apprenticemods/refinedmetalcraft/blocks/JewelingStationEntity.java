@@ -89,6 +89,18 @@ public class JewelingStationEntity extends BaseBlockEntity {
 		this.currentRecipeProgress = 0;
 	}
 
+	public float getProgressRatio() {
+		if(currentRecipe == null) {
+			return 0;
+		}
+
+		var toolSteps = this.currentRecipe.value().getToolSteps();
+		if(toolSteps.isEmpty()) {
+			return 1;
+		}
+		return (float) currentRecipeProgress / toolSteps.size();
+	}
+
 	private ItemStackHandler createOutputInventory() {
 		return new ItemStackHandler(1) {
 			@Override
