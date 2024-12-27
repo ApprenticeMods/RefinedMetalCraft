@@ -2,11 +2,14 @@ package com.apprenticemods.refinedmetalcraft.base.gui.widgets;
 
 import com.apprenticemods.refinedmetalcraft.base.gui.GUI;
 import com.apprenticemods.refinedmetalcraft.base.gui.event.*;
+import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,7 +26,7 @@ public class Widget {
 	boolean hovered = false;
 	Widget parent;
 
-	List<Component> tooltipLines = new ArrayList<>();
+	List<Either<Component, TooltipComponent>> tooltipElements;
 
 	Map<Class<? extends IEvent>, List<IWidgetListener>> eventListeners = new HashMap<>();
 	List<IWidgetListener> anyEventListener = new ArrayList<>();
@@ -71,52 +74,130 @@ public class Widget {
 	}
 
 	public boolean hasToolTip() {
-		return tooltipLines != null && tooltipLines.size() > 0;
+		return tooltipElements != null && !tooltipElements.isEmpty();
 	}
 
-	public List<String> getTooltipAsString() {
-		return getTooltip().stream().map(Component::getString).collect(Collectors.toList());
-	}
-
-	public List<FormattedCharSequence> getTooltipAsFormattedCharSequence() {
-		return getTooltip().stream().map(component -> FormattedCharSequence.forward(component.getString(), component.getStyle())).collect(Collectors.toList());
-	}
-
-	public List<Component> getTooltip() {
-		if(tooltipLines == null) {
+	public List<Either<Component, TooltipComponent>> getTooltip() {
+		if(tooltipElements == null) {
 			return Collections.emptyList();
 		}
 
-		return tooltipLines;
+		return tooltipElements;
 	}
 
-	public Widget setTooltipLines(List<Component> tooltipLines) {
-		this.tooltipLines = tooltipLines;
+	public List<Either<FormattedText, TooltipComponent>> getTooltipFormatted() {
+		if(tooltipElements == null) {
+			return Collections.emptyList();
+		}
+
+		var result = new ArrayList<Either<FormattedText, TooltipComponent>>();
+		for(Either<Component, TooltipComponent> element : tooltipElements) {
+			if(element.left().isPresent()) {
+				result.add(Either.left(FormattedText.of(element.left().get().getString(), element.left().get().getStyle())));
+			} else {
+				result.add(Either.right(element.right().get()));
+			}
+		}
+		return result;
+	}
+
+	public Widget setTooltipLinesEither(List<Either<Component, TooltipComponent>> tooltipElements) {
+		this.tooltipElements = tooltipElements;
 		return this;
 	}
 
-	public Widget setTooltipLines(Component... tooltipLines) {
-		this.tooltipLines = new ArrayList<>();
-		for(Component line : tooltipLines) {
-			this.tooltipLines.add(line);
+	public Widget setTooltipLines(List<Component> tooltipElements) {
+		this.tooltipElements = new ArrayList<>();
+		for(Component line : tooltipElements) {
+			this.tooltipElements.add(Either.left(line));
 		}
 		return this;
 	}
 
-	public Widget addTooltipLine(Component... tooltipLines) {
-		for(Component line : tooltipLines) {
-			this.tooltipLines.add(line);
+	public Widget setTooltipLines(Component... tooltipElements) {
+		this.tooltipElements = new ArrayList<>();
+		for(Component line : tooltipElements) {
+			this.tooltipElements.add(Either.left(line));
 		}
 		return this;
 	}
 
-	public Widget addTooltipLine(List<Component> strings) {
-		this.tooltipLines.addAll(strings);
+	public Widget setTooltipElements(List<TooltipComponent> tooltipElements) {
+		this.tooltipElements = new ArrayList<>();
+		for(TooltipComponent line : tooltipElements) {
+			this.tooltipElements.add(Either.right(line));
+		}
+		return this;
+	}
+
+	public Widget setTooltipElements(TooltipComponent... tooltipElements) {
+		this.tooltipElements = new ArrayList<>();
+		for(TooltipComponent line : tooltipElements) {
+			this.tooltipElements.add(Either.right(line));
+		}
+		return this;
+	}
+
+	public Widget setTooltipEither(Either<Component, TooltipComponent>... tooltipElements) {
+		this.tooltipElements = new ArrayList<>();
+		for(Either<Component, TooltipComponent> line : tooltipElements) {
+			this.tooltipElements.add(line);
+		}
+		return this;
+	}
+
+	public Widget addTooltipLine(Component... tooltipElements) {
+		for(Component line : tooltipElements) {
+			this.tooltipElements.add(Either.left(line));
+		}
+		return this;
+	}
+
+	public Widget addTooltipLine(List<Component> tooltipElements) {
+		for(Component line : tooltipElements) {
+			this.tooltipElements.add(Either.left(line));
+		}
+		return this;
+	}
+
+	public Widget addTooltipElement(TooltipComponent... tooltipElements) {
+		for(TooltipComponent line : tooltipElements) {
+			this.tooltipElements.add(Either.right(line));
+		}
+		return this;
+	}
+
+	public Widget addTooltipElement(List<TooltipComponent> tooltipElements) {
+		for(TooltipComponent line : tooltipElements) {
+			this.tooltipElements.add(Either.right(line));
+		}
+		return this;
+	}
+
+	public Widget addTooltipEither(Either<Component, TooltipComponent>... tooltipElements) {
+		for(Either<Component, TooltipComponent> line : tooltipElements) {
+			this.tooltipElements.add(line);
+		}
+		return this;
+	}
+
+	public Widget addTooltipEither(List<Either<Component, TooltipComponent>> elements) {
+		this.tooltipElements.addAll(elements);
 		return this;
 	}
 
 	public Widget insertTooltipLine(int index, Component line) {
-		this.tooltipLines.add(index, line);
+		this.tooltipElements.add(index, Either.left(line));
+		return this;
+	}
+
+	public Widget insertTooltipElement(int index, TooltipComponent line) {
+		this.tooltipElements.add(index, Either.right(line));
+		return this;
+	}
+
+	public Widget insertTooltipEither(int index, Either<Component, TooltipComponent> line) {
+		this.tooltipElements.add(index, line);
 		return this;
 	}
 

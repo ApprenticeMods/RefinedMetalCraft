@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -115,18 +116,15 @@ public class GUI extends WidgetPanel {
 
 	public void drawTooltips(GuiGraphics pGuiGraphics, Screen screen, int mouseX, int mouseY) {
 		Widget hoveredWidget = getHoveredWidget(mouseX, mouseY);
-		Font font = screen.getMinecraft().font;
-
-		if(hoveredWidget != null && hoveredWidget.getTooltip() != null) {
-			if(hoveredWidget.getTooltip().size() > 0) {
-				pGuiGraphics.renderTooltip(font, hoveredWidget.getTooltipAsFormattedCharSequence(), mouseX, mouseY);
-				// GuiUtils.drawHoveringText(hoveredWidget.getTooltipAsString(), mouseX, mouseY, width, height, 180, font);
-			}/* else {
-                List<String> tooltips = new ArrayList<>();
-                tooltips.add(hoveredWidget.toString());
-                GuiUtils.drawHoveringText(tooltips, mouseX, mouseY, width, height, 180, font);
-            }*/
+		if(hoveredWidget == null || hoveredWidget.getTooltip() == null) {
+			return;
 		}
+		if(hoveredWidget.getTooltip().isEmpty()) {
+			return;
+		}
+
+		Font font = screen.getMinecraft().font;
+		pGuiGraphics.renderComponentTooltipFromElements(font, hoveredWidget.getTooltipFormatted(), mouseX, mouseY, ItemStack.EMPTY);
 	}
 
 	public void drawSlot(GuiGraphics pGuiGraphics, Screen screen, Slot slot, int guiLeft, int guiTop) {
