@@ -28,5 +28,13 @@ public class Items extends ItemTagsProvider {
 			ModItems.PLIERS_ITEM.get(),
 			ModItems.SANDINGBELT_ITEM.get()
 		);
+
+		tag(ModTags.JEWELING_TOOL_CUTTERS_TAG).add(ModItems.CUTTERS_ITEM.get());
+		tag(ModTags.JEWELING_TOOL_FILES_TAG).add(ModItems.FILE_ITEM.get());
+		tag(ModTags.JEWELING_TOOL_DRILLS_TAG).add(ModItems.HANDDRILL_ITEM.get());
+		tag(ModTags.JEWELING_TOOL_GRINDERS_TAG).add(ModItems.HANDGRINDER_ITEM.get());
+		tag(ModTags.JEWELING_TOOL_HAMMERS_TAG).add(ModItems.MINIHAMMER_ITEM.get());
+		tag(ModTags.JEWELING_TOOL_PLIERS_TAG).add(ModItems.PLIERS_ITEM.get());
+		tag(ModTags.JEWELING_TOOL_POLISHERS_TAG).add(ModItems.SANDINGBELT_ITEM.get());
 	}
 }

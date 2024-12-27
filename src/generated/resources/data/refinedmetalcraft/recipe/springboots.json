@@ -18,10 +18,10 @@
   },
   "tools": [
     {
-      "item": "refinedmetalcraft:pliers"
+      "tag": "refinedmetalcraft:jeweling_tools/drills"
     },
     {
-      "item": "refinedmetalcraft:minihammer"
+      "tag": "refinedmetalcraft:jeweling_tools/hammers"
     }
   ]
 }

@@ -2,6 +2,7 @@ package com.apprenticemods.refinedmetalcraft.datagen;
 
 import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipeBuilder;
 import com.apprenticemods.refinedmetalcraft.setup.ModItems;
+import com.apprenticemods.refinedmetalcraft.setup.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -27,8 +28,8 @@ public class Recipes extends RecipeProvider {
 				.setLeft(Ingredient.of(ModItems.SPRING_ITEM.get()))
 				.setRight(Ingredient.of(ModItems.SPRING_ITEM.get()))
 				.setBack(Ingredient.of(Items.LEATHER_BOOTS))
-				.addTool(Ingredient.of(ModItems.PLIERS_ITEM.get()))
-				.addTool(Ingredient.of(ModItems.MINIHAMMER_ITEM.get()))
+				.addTool(Ingredient.of(ModTags.JEWELING_TOOL_DRILLS_TAG))
+				.addTool(Ingredient.of(ModTags.JEWELING_TOOL_HAMMERS_TAG))
 				.unlockedBy("spring", has(ModItems.SPRING_ITEM.get())).save(recipeOutput);
 
 		new JewelingStationRecipeBuilder(Items.GILDED_BLACKSTONE.getDefaultInstance())
@@ -36,9 +37,9 @@ public class Recipes extends RecipeProvider {
 				.setLeft(Ingredient.of(Items.GOLD_NUGGET))
 				.setRight(Ingredient.of(Items.GOLD_NUGGET))
 				.setBack(Ingredient.of(Items.GOLD_NUGGET))
-				.addTool(Ingredient.of(ModItems.HANDDRILL_ITEM.get()))
-				.addTool(Ingredient.of(ModItems.MINIHAMMER_ITEM.get()))
-				.addTool(Ingredient.of(ModItems.HANDGRINDER_ITEM.get()))
+				.addTool(Ingredient.of(ModTags.JEWELING_TOOL_DRILLS_TAG))
+				.addTool(Ingredient.of(ModTags.JEWELING_TOOL_HAMMERS_TAG))
+				.addTool(Ingredient.of(ModTags.JEWELING_TOOL_GRINDERS_TAG))
 				.unlockedBy("blackstone_and_gold", has(Items.BLACKSTONE)).save(recipeOutput);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.JEWELINGSTATION_BLOCK_ITEM.get())
