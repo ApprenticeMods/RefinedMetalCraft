@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -29,7 +30,11 @@ public class JewelingStation extends Block implements EntityBlock {
 	public static final VoxelShape SHAPE = Shapes.box(0, 0, 0, 1, 0.875, 1);
 
 	public JewelingStation(Properties properties) {
-		super(properties.requiresCorrectToolForDrops());
+		super(properties
+				.requiresCorrectToolForDrops()
+				.strength(3.5F, 9.0F)
+				.instrument(NoteBlockInstrument.PLING)
+		);
 
 		this.registerDefaultState(this.getStateDefinition().any()
 				.setValue(BlockStateProperties.FACING, Direction.NORTH)
@@ -49,6 +54,20 @@ public class JewelingStation extends Block implements EntityBlock {
 		}
 
 		return super.useWithoutItem(state, level, pos, player, hitResult);
+	}
+
+	@Override
+	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+		if(level.isClientSide() || state.is(newState.getBlock())) {
+			super.onRemove(state, level, pos, newState, movedByPiston);
+			return;
+		}
+
+		if(level.getBlockEntity(pos) instanceof JewelingStationEntity jewelingStation) {
+			jewelingStation.dropContentsInWorld();
+		}
+
+		super.onRemove(state, level, pos, newState, movedByPiston);
 	}
 
 	@Override

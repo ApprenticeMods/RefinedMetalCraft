@@ -3,6 +3,7 @@ package com.apprenticemods.refinedmetalcraft.blocks;
 import com.apprenticemods.refinedmetalcraft.RefinedMetalCraft;
 import com.apprenticemods.refinedmetalcraft.base.BaseBlockEntity;
 import com.apprenticemods.refinedmetalcraft.base.util.DirectionUtils;
+import com.apprenticemods.refinedmetalcraft.base.util.SpawnHelper;
 import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipe;
 import com.apprenticemods.refinedmetalcraft.recipes.JewelingStationRecipeInputNoTools;
 import com.apprenticemods.refinedmetalcraft.setup.Cache;
@@ -314,5 +315,15 @@ public class JewelingStationEntity extends BaseBlockEntity {
 			}
 		}
 		return false;
+	}
+
+	public void dropContentsInWorld() {
+		if(level == null || level.isClientSide()) {
+			return;
+		}
+
+		SpawnHelper.dropItemHandlerContents(inputInventoryHandler, level, worldPosition);
+		SpawnHelper.dropItemHandlerContents(outputInventoryHandler, level, worldPosition);
+		SpawnHelper.dropItemHandlerContents(toolInventoryHandler, level, worldPosition);
 	}
 }
