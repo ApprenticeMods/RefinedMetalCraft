@@ -77,7 +77,6 @@ public class JewelingStationEntity extends BaseBlockEntity {
 
 				RefinedMetalCraft.LOGGER.trace("Matching recipe: {}", recipeHolder.id());
 				this.currentRecipe = recipeHolder;
-				this.currentRecipeProgress = 0;
 				return;
 			} else {
 				RefinedMetalCraft.LOGGER.trace("Matching, but incomplete recipe: {}", recipeHolder.id());
@@ -215,6 +214,12 @@ public class JewelingStationEntity extends BaseBlockEntity {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		updateRecipeInfo();
 	}
 
 	public void tick() {
