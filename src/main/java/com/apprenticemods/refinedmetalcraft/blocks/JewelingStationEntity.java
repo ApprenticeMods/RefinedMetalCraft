@@ -109,6 +109,11 @@ public class JewelingStationEntity extends BaseBlockEntity {
 				setChanged();
 				notifyClients(false);
 			}
+
+			@Override
+			public boolean isItemValid(int slot, ItemStack stack) {
+				return Cache.JEWELING_OUTPUTS.get().contains(stack.getItem());
+			}
 		};
 	}
 

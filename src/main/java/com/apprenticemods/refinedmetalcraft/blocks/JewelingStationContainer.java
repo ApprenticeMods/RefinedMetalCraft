@@ -50,7 +50,7 @@ public class JewelingStationContainer extends WidgetBlockEntityContainer<Jewelin
 
 		this.allowSlotGroupMovement(SLOTGROUP_PLAYER, SLOTGROUP_INPUT, true);
 		this.allowSlotGroupMovement(SLOTGROUP_PLAYER, SLOTGROUP_TOOLS, true);
-		this.allowSlotGroupMovement(SLOTGROUP_OUTPUT, SLOTGROUP_PLAYER);
+		this.allowSlotGroupMovement(SLOTGROUP_PLAYER, SLOTGROUP_OUTPUT, true);
 
 	}
 }

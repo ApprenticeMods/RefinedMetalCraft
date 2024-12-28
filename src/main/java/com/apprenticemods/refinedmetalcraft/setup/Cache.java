@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,7 +28,12 @@ public class Cache {
 
 	public static Map<JewelingStationRecipeInputNoTools, Set<RecipeHolder<JewelingStationRecipe>>> JEWELING_RECIPE_LOOKUP = new HashMap<>();
 	public static Map<Direction, Map<JewelingStationRecipeInputNoTools, Set<Ingredient>>> JEWELING_INGREDIENT_LOOKUP = new HashMap<>();
-
+	public static CacheStorage<Set<Item>> JEWELING_OUTPUTS = new CacheStorage<>(() -> {
+		return JEWELING_RECIPES.get().stream()
+				.map(RecipeHolder::value)
+				.map(JewelingStationRecipe::getResultItem)
+				.map(ItemStack::getItem).collect(Collectors.toSet());
+	});
 
 	public static Set<Ingredient> getValidIngredients(JewelingStationRecipeInputNoTools input, Direction side) {
 		if(!JEWELING_INGREDIENT_LOOKUP.containsKey(side)) {
